@@ -13,6 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::group([])middleware(['auth:sanctum', 'verified'])->get('/', function () {
+//     return view('dashboard');
+// })->name('dashboard');
+
+Route::group([
+    'middleware' => ['auth:sanctum', 'verified']
+], function () {
+    Route::get('/', function () {
+        return view('collection.home');
+    })->name('dashboard');
+    
+    Route::get('/collection', function () {
+        return view('collection.index');
+    })->name('collection.index');
 });
+
+
