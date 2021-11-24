@@ -40,5 +40,8 @@ Route::group([
         return view('collection.schedule');
     })->name('collection.schedule');
 });
+Route::get('/collection/create', function () {
+    return view('collection.create-collection');
+})->name('collection.create-collection');
 
 
