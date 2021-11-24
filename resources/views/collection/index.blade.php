@@ -51,9 +51,9 @@
     <div class = "row ">
         <div class = "col-lg-12">
             <div class="float-right">
-                <button class = "btn btn-lg btn-primary">
+                <a href="{{ route('collection.create-collection') }}" class = "btn btn-lg btn-primary">
                     New Collection
-                </button>
+                </a>
             </div>
         </div>
     </div>

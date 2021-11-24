@@ -12,7 +12,7 @@
 <body>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
     <div class="col-sm-6">
-        <button type="button" class="btn btn-lg btn-success">Home</button>
+        <a href="{{ route('dashboard') }}" type="button" class="btn btn-lg btn-success">Home</a>
     </div>
     <div class="col-sm-6 ">
         <div class="float-right">
@@ -42,7 +42,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-sm-6 ">
-            <div class="m-3"><button type="button" class="btn btn-lg btn-outline-dark btn-block">復習スケジュールを管理</button></div>
+            <div class="m-3"><a href="{{ route('collection.schedule') }}" type="button" class="btn btn-lg btn-outline-dark btn-block">復習スケジュールを管理</a></div>
         </div>
     </div>
     <div class="row justify-content-center">
@@ -52,7 +52,7 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-sm-6 ">
-            <div class="m-3"><button type="button" class="btn btn-lg btn-outline-dark btn-block">コレクションを見る</button></div>
+            <div class="m-3"><a href="{{ route('collection.index-card') }}" type="button" class="btn btn-lg btn-outline-dark btn-block">コレクションを見る</a></div>
         </div>
     </div>
 </div>
