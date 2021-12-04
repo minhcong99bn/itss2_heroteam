@@ -31,32 +31,104 @@
 
 <div class="container">
     <div class="row collections-view justify-content-around align-items-center"> 
-            <div class="col-sm-4 border-right border-dark">
-                <div class = "p-3 m-3 border bg-light float center text-center">Collection 1</div>
-                <div class = "p-3 m-3 border bg-light float center text-center">Collection 4</div>
-                <div class = "p-3 m-3 border bg-light float center text-center">Collection 7</div>
+        @foreach($collections as $collection)
+            <div class="col-sm-4" id="collection-{{ $collection->id }}">
+                <div class = "p-5 m-3 border bg-light float center text-center">
+                    <a class="text-dark mb-3" href="{{ route('collection.create-collection', $collection->id) }}"><b class="mb-3">{{ $collection->name }}</b></a>
+                    <div class="d-flex justify-content-end align-items-end">
+                        <a href="javascript:void(0)" class="delete-collection align-items-end" path="{{ route('collection-delete') }}" data-id="{{ $collection->id }}" onclick="return confirm('Are you want do delete this?')">Delete</a>
+                    </div>
+                </div>
+               
             </div>
-            <div class="col-sm-4 border-right border-dark">
-                <div class = "p-3 m-3 border bg-light float-center text-center">Collection 2</div>
-                <div class = "p-3 m-3 border bg-light float center text-center">Collection 5</div>
-                <div class = "p-3 m-3 border bg-light float center text-center">Collection 8</div>
-            </div>
-            <div class="col-sm-4">
-                <div class = "p-3 m-3 border bg-light float-center text-center">Collection 3</div>
-                <div class = "p-3 m-3 border bg-light float center text-center">Collection 6</div>
-                <div class = "p-3 m-3 border bg-light float center text-center">Collection 9</div>
-            </div>
+        @endforeach
     </div>
     
     <div class = "row ">
         <div class = "col-lg-12">
             <div class="float-right">
-                <a href="{{ route('collection.create-collection') }}" class = "btn btn-lg btn-primary">
+                <button data-toggle="modal" data-target="#exampleModalCenter" type="button" class = "btn btn-lg btn-primary">
                     New Collection
-                </a>
+                </button>
             </div>
         </div>
     </div>
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Create New Collection</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+           
+            <div class="modal-body row my-3  align-items-center">
+              <label class="col-12"> Nhập Collection Name</label>
+              <meta name="csrf-token" content="{!! csrf_token() !!}">
+              <input type="text"  placeholder="Nhập Name của Collection" class="mr-2 col-10 collection-name form-control" required>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" path="{{ route('collection.store') }}" class="btn btn-primary create-collection">Create</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="http://code.jquery.com/jquery.min.js"></script>
+      <script>
+          $('.create-collection').click(function()
+          {
+              var name = $('.collection-name').val();
+              if (name == '')
+                alert("Vui lòng điền đầy đủ thông tin");
+              var path = $(this).attr("path");
+              console.log(path);
+          
+              $.ajaxSetup({
+                  headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  }
+              });
+          
+              $.ajax({
+                  url: path,
+                  type: "post",
+                  data: {
+                      'name' : name,
+                  },
+          
+                  success: function(response) {
+                      var path = '/collection/create/' + response.id;
+                      window.location.href = path;
+                      alert("Create Collection success");
+                  }
+              });  
+          });
+
+            $(document).on('click', '.delete-collection', function() {
+            var id = $(this).attr("data-id");
+            var path = $(this).attr("path");   
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: path,
+                type: "delete",
+                data: {
+                    'id' : id,
+                },
+
+                success: function(response) {
+                    var remove = "#collection-" + id;
+                    $(remove).remove();
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
