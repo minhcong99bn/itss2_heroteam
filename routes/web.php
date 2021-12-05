@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CollectionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,13 +25,17 @@ Route::group([
         return view('collection.home');
     })->name('dashboard');
     
-    Route::get('/collection', function () {
-        return view('collection.index');
-    })->name('collection.index');
+    Route::get('/collection', [CollectionController::class, 'index'])->name('collection.index');
+    Route::post('/collection', [CollectionController::class, 'store'])->name('collection.store');
 
-    Route::get('/collection/create', function () {
-        return view('collection.create-collection');
-    })->name('collection.create-collection');
+    Route::get('/collection/create/{id}', [CollectionController::class, 'createCard'])->name('collection.create-collection');
+    Route::post('/collection/update/{id}', [CollectionController::class, 'update'])->name('collection.update');
+    Route::post('/collection/card/store', [CollectionController::class, 'storeCard'])->name('card.store');
+    Route::get('/collection/card/show', [CollectionController::class, 'showCard'])->name('collection.show-card');
+    Route::post('/collection/card/update', [CollectionController::class, 'updateCard'])->name('collection.update-card');
+    Route::delete('/collection/card/destroy', [CollectionController::class, 'deleteCard'])->name('collection.delete-card');
+    Route::delete('/collection/destroy', [CollectionController::class, 'delete'])->name('collection-delete');
+
 
     Route::get('/collection/index', function () {
         return view('collection.index-card');
@@ -40,5 +45,9 @@ Route::group([
         return view('collection.schedule');
     })->name('collection.schedule');
 });
+
+// Route::get('/collection/create', function () {
+//     return view('collection.create-collection');
+// })->name('collection.create-collection');
 
 
