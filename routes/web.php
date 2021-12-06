@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\CardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,9 +36,8 @@ Route::group([
     Route::post('/collection/card/update', [CollectionController::class, 'updateCard'])->name('collection.update-card');
     Route::delete('/collection/card/destroy', [CollectionController::class, 'deleteCard'])->name('collection.delete-card');
     Route::delete('/collection/destroy', [CollectionController::class, 'delete'])->name('collection-delete');
-
-
     Route::get('/collection/index', [CollectionController::class, 'showCollection'])->name('collection.index-card');
+    Route::get('/card/show', [CardController::class, 'index'])->name('card.index');
  
     Route::get('/schedule', function () {
         return view('collection.schedule');

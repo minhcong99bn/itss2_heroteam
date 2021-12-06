@@ -7,8 +7,12 @@ use App\Models\Card;
 
 class CardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $cards = Card::where('collection_id', $request->id)->paginate(1);
+        $count = count($cards);
+
+        return view('card.detail', compact('cards', 'count'));
     }
 
     public function store(Request $request)
