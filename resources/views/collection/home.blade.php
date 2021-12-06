@@ -10,12 +10,12 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
+<nav class="navbar navbar-expand-sm navbar-dark sticky-top" style="background-color: #CC6666">
     <div class="col-sm-6">
         <a href="{{ route('dashboard') }}" type="button" class="btn btn-lg btn-success">ホーム</a>
     </div>
     <div class="col-sm-6 ">
-        <div class="float-right">
+        <div class="float-left">
             @if (Route::has('login'))
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                     @auth
@@ -27,6 +27,8 @@
                     @endauth
                 </div>
             @endif
+        </div>
+        <div class="float-right">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
             <a href="{{ route('logout') }}"  onclick="event.preventDefault();
