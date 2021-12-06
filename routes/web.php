@@ -37,10 +37,8 @@ Route::group([
     Route::delete('/collection/destroy', [CollectionController::class, 'delete'])->name('collection-delete');
 
 
-    Route::get('/collection/index', function () {
-        return view('collection.index-card');
-    })->name('collection.index-card');
-
+    Route::get('/collection/index', [CollectionController::class, 'showCollection'])->name('collection.index-card');
+ 
     Route::get('/schedule', function () {
         return view('collection.schedule');
     })->name('collection.schedule');

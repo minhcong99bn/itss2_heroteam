@@ -88,4 +88,10 @@ class CollectionController extends Controller
 
         return response()->json();
     }
+
+    public function showCollection(){
+        $collection = Collection::select('name', 'id')->get();
+        return view('collection.index-card', compact('collection'));
+    }
+
 }
