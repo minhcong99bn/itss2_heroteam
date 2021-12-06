@@ -90,8 +90,10 @@ class CollectionController extends Controller
     }
 
     public function showCollection(){
-        $collection = Collection::select('name', 'id')->get();
-        return view('collection.index-card', compact('collection'));
+        $collection = Collection::select('name', 'id')->first();
+        $card = Card::where('collection_id', $collection->id)->get();
+        $paginate = Card::where('collection_id', $collection->id)->paginate(1);
+        return view('collection.index-card', compact('collection', 'card', 'paginate'));
     }
 
 }
