@@ -11,7 +11,7 @@ class CollectionController extends Controller
 {
     public function index()
     {
-        $collections = Collection::where('user_id', auth()->id())->paginate(10);
+        $collections = Collection::where('user_id', auth()->id())->paginate(9);
         return view('collection.index', compact('collections'));
     }
 
@@ -90,10 +90,11 @@ class CollectionController extends Controller
     }
 
     public function showCollection(){
-        $collection = Collection::select('name', 'id')->first();
-        $card = Card::where('collection_id', $collection->id)->get();
-        $paginate = Card::where('collection_id', $collection->id)->paginate(1);
-        return view('collection.index-card', compact('collection', 'card', 'paginate'));
+        $collection = Collection::select('name', 'id')->get();
+        $cards = Card::where('collection_id', $collection[0]->id)->paginate(1);
+        $count = count($cards);
+
+        return view('collection.index-card', compact('collection', 'cards', 'count'));
     }
 
 }

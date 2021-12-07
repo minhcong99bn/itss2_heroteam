@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>フラッシュカード</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -12,7 +12,7 @@
 <body>
 <nav class="navbar navbar-expand-sm navbar-dark sticky-top" style="background-color: #CC6666">
     <div class="col-sm-6">
-        <a href="{{ route('dashboard') }}" type="button" class="btn btn-lg btn-success">Home</a>
+        <a href="{{ route('dashboard') }}" type="button" class="btn btn-lg btn-success">ホーム</a>
     </div>
     <div class="col-sm-6 ">
         <div class="float-left">
@@ -20,9 +20,9 @@
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                     @auth
                     @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
+                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">ログイン</a>
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
+                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">サインアップ</a>
                         @endif
                     @endauth
                 </div>
@@ -34,7 +34,7 @@
             <a href="{{ route('logout') }}"  onclick="event.preventDefault();
                 this.closest('form').submit();" type="button" class="btn btn-lg btn-success">
             </form>
-                Sign Out
+                サインアウト
             </a>
         </div>
     </div>

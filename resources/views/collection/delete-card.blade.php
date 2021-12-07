@@ -4,7 +4,7 @@
             <div class="col d-flex flex-column justify-content-center">
                 <div class="card-front bg-secondary border mb-4">
                     <div class="text-center text-white my-4">
-                        <p>Front</p>
+                        <p>フロント</p>
                         <meta name="csrf-token" content="{!! csrf_token() !!}">
                         <textarea id="text-front" name="text-front" rows="12" cols="50" required></textarea>
                     </div>
@@ -13,7 +13,7 @@
             <div class="col d-flex flex-column">
                 <div class="card-back bg-secondary border mb-4">
                     <div class="text-center text-white my-4">
-                        <p>Back</p>
+                        <p>裏側</p>
                         <meta name="csrf-token" content="{!! csrf_token() !!}">
                         <textarea id="text-back" name="text-back" rows="12" cols="50" required></textarea>
                     </div>
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div>
-            <button path="{{ route('card.store') }}" class="btn btn-primary btn-save">Save</button>
+            <button path="{{ route('card.store') }}" class="btn btn-primary btn-save">保存する</button>
         </div>
     </div>
 </div>

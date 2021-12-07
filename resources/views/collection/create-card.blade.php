@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Flash Card</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .card {
@@ -22,7 +22,7 @@
 <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
         <div class="col-sm-6">
-            <a href="{{ route('dashboard') }}" type="button" class="btn btn-lg btn-success">Home</a>
+            <a href="{{ route('dashboard') }}" type="button" class="btn btn-lg btn-success">ホーム</a>
         </div>
         <div class="col-sm-6 ">
             <div class="float-right">
@@ -31,7 +31,7 @@
                 <a href="{{ route('logout') }}"  onclick="event.preventDefault();
                     this.closest('form').submit();" type="button" class="btn btn-lg btn-success">
                 </form>
-                    Sign Out
+                    サインアウト
                 </a>
             </div>
         </div>
@@ -50,7 +50,8 @@
                                 <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
                             </svg>
                         </button>
-                        <button class="btn btn-primary btn-collection" path="{{ route('collection.update', $collection->id)}}">Save
+                        <button class="btn btn-primary btn-collection" path="{{ route('collection.update', $collection->id)}}">
+                            保存する
                         </button>
                     </div>
                     <div class="container row ml-4">
@@ -60,7 +61,7 @@
                                     <b>{{ $card->front }}</b>
                                 </div>
                                 <div class="align-text-bottom">
-                                    <a href="javascript:void(0)" id="{{ $card->id }}" path="{{ route('collection.show-card')}}" class="show-card">Show</a>
+                                    <a href="javascript:void(0)" id="{{ $card->id }}" path="{{ route('collection.show-card')}}" class="show-card">見せる</a>
                                 </div>
                             </div>                           
                         @endforeach
@@ -82,7 +83,7 @@
                         <div class="col d-flex flex-column justify-content-center">
                             <div class="card-front bg-secondary border mb-4">
                                 <div class="text-center text-white my-4">
-                                    <p>Front</p>
+                                    <p>フロント</p>
                                     <meta name="csrf-token" content="{!! csrf_token() !!}">
                                     <textarea id="text-front" name="text-front" rows="12" cols="50" required></textarea>
                                 </div>
@@ -91,7 +92,7 @@
                         <div class="col d-flex flex-column">
                             <div class="card-back bg-secondary border mb-4">
                                 <div class="text-center text-white my-4">
-                                    <p>Back</p>
+                                    <p>裏側</p>
                                     <meta name="csrf-token" content="{!! csrf_token() !!}">
                                     <textarea id="text-back" name="text-back" rows="12" cols="50" required></textarea>
                                 </div>
@@ -99,7 +100,7 @@
                         </div>
                     </div>
                     <div>
-                        <button path="{{ route('card.store') }}" class="btn btn-primary btn-save">Save</button>
+                        <button path="{{ route('card.store') }}" class="btn btn-primary btn-save">保存する</button>
                     </div>
                 </div>
             </div>

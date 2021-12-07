@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>コレクション</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -12,7 +12,7 @@
 <body>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
     <div class="col-sm-6">
-        <a href="{{ route('dashboard') }}" type="button" class="btn btn-lg btn-success">Home</a>
+        <a href="{{ route('dashboard') }}" type="button" class="btn btn-lg btn-success">ホーム</a>
     </div>
     <div class="col-sm-6 ">
         <div class="float-right">
@@ -21,7 +21,7 @@
             <a href="{{ route('logout') }}"  onclick="event.preventDefault();
                 this.closest('form').submit();" type="button" class="btn btn-lg btn-success">
             </form>
-                Sign Out
+                サインアウト
             </a>
         </div>
     </div>
@@ -36,7 +36,7 @@
                 <div class = "p-5 m-3 border bg-light float center text-center">
                     <a class="text-dark mb-3" href="{{ route('collection.create-collection', $collection->id) }}"><b class="mb-3">{{ $collection->name }}</b></a>
                     <div class="d-flex justify-content-end align-items-end">
-                        <a href="javascript:void(0)" class="delete-collection align-items-end" path="{{ route('collection-delete') }}" data-id="{{ $collection->id }}" onclick="return confirm('Are you want do delete this?')">Delete</a>
+                        <a href="javascript:void(0)" class="delete-collection align-items-end" path="{{ route('collection-delete') }}" data-id="{{ $collection->id }}" onclick="return confirm('Are you want do delete this?')">消去</a>
                     </div>
                 </div>
                
@@ -48,7 +48,7 @@
         <div class = "col-lg-12">
             <div class="float-right">
                 <button data-toggle="modal" data-target="#exampleModalCenter" type="button" class = "btn btn-lg btn-primary">
-                    New Collection
+                    新しいコレクション
                 </button>
             </div>
         </div>
@@ -57,20 +57,20 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Create New Collection</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">新しいコレクションを作成</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
            
             <div class="modal-body row my-3  align-items-center">
-              <label class="col-12"> Nhập Collection Name</label>
+              <label class="col-12">新しいコレクションの名前</label>
               <meta name="csrf-token" content="{!! csrf_token() !!}">
               <input type="text"  placeholder="Nhập Name của Collection" class="mr-2 col-10 collection-name form-control" required>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" path="{{ route('collection.store') }}" class="btn btn-primary create-collection">Create</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+              <button type="button" path="{{ route('collection.store') }}" class="btn btn-primary create-collection">作成</button>
             </div>
           </div>
         </div>
