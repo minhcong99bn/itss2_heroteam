@@ -100,6 +100,7 @@
         <div class="container">
             <div class="row my-4">
                 <div class="col-6">
+                    <meta name="csrf-token" content="{!! csrf_token() !!}">
                     <button data-path="{{ route('schedule.update') }}" class="btn btn-outline-primary btn-save">保存する</button>
                 </div>
                 {{-- <div class="col-6 d-flex justify-content-end align-items-center">

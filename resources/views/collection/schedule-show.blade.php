@@ -20,6 +20,7 @@
                     </div>
                     <div class="col d-flex justify-content-center my-4">
                         <span class="mr-2">2回目 (日) </span>
+                        <meta name="csrf-token" content="{!! csrf_token() !!}">
                         <input type="text" id="two" value="{{ $schedule->two }}">
                         <button class="btn btn-light rounded">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
@@ -31,6 +32,7 @@
                 <div class="row">
                     <div class="col d-flex justify-content-center my-4">
                         <span class="mr-2">3回目 (週)</span>
+                        <meta name="csrf-token" content="{!! csrf_token() !!}">
                         <input type="text" id="three" value="{{ $schedule->three }}">
                         <button class="btn btn-light rounded">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
@@ -40,6 +42,7 @@
                     </div>
                     <div class="col d-flex justify-content-center my-4">
                         <span class="mr-2">4回目 (月)</span>
+                        <meta name="csrf-token" content="{!! csrf_token() !!}">
                         <input type="text" id="four" value="{{ $schedule->four }}">
                         <button class="btn btn-light rounded">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
@@ -53,6 +56,7 @@
         <div class="row">
             <div class="col d-flex justify-content-center my-4">
                 <span>カスタム (月)</span>
+                <meta name="csrf-token" content="{!! csrf_token() !!}">
                 <input type="text" id="custom" value="{{ $schedule->custom}}">
                 <button class="btn btn-light rounded">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
