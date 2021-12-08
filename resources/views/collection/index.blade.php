@@ -66,7 +66,7 @@
             <div class="modal-body row my-3  align-items-center">
               <label class="col-12">新しいコレクションの名前</label>
               <meta name="csrf-token" content="{!! csrf_token() !!}">
-              <input type="text"  placeholder="Nhập Name của Collection" class="mr-2 col-10 collection-name form-control" required>
+              <input type="text"  placeholder="コレクションの名前を入力してください" class="mr-2 col-10 collection-name form-control" required>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
@@ -101,7 +101,7 @@
                   success: function(response) {
                       var path = '/collection/create/' + response.id;
                       window.location.href = path;
-                      alert("Create Collection success");
+                      alert("コレクションの成功を生み出す!");
                   }
               });  
           });

@@ -112,7 +112,7 @@
         {
             var name = $('.collection-name').val();
             if (name == '')
-              alert("Vui lòng điền đầy đủ thông tin");
+              alert("フォームに記入してください");
             var path = $(this).attr("path");
 
             $.ajaxSetup({
@@ -131,7 +131,7 @@
                 success: function(response) {
                     var path = '/collection/create/' + response.id;
                     window.location.href = path;
-                    alert("Create Collection success");
+                    alert("コレクションの成功を生み出す!");
                 }
             });  
         });
@@ -148,7 +148,7 @@
             var path = $(this).attr("path");
             var name = $('.input-collection').val()
             if (name == '')
-              alert("Vui lòng điền đầy đủ thông tin");
+              alert("フォームに記入してください!");
         
             $.ajaxSetup({
                 headers: {
@@ -174,6 +174,8 @@
             $('#text-front').toggle();
             $('#text-back').toggle();
             $('.btn-save').toggle();
+            $('.update-card').toggle();
+            $('.delete-card').toggle();
         });
 
         $(document).on('click', '.btn-save', function() {
@@ -196,7 +198,7 @@
                 success: function(response) {
                     var path = '/collection/create/' + $('.collection_id').val();
                     window.location.href = path;
-                    alert("Create Card success");
+                    alert("カードの成功を作成する!");
                 }
             });  
         })
@@ -246,7 +248,7 @@
 
                 success: function(response) {
                     $('.card-collection').children('.container').remove();
-                    alert("Update success");
+                    alert("更新の成功!");
                     $('.card-collection').append($(response).html());
                 }
             });  

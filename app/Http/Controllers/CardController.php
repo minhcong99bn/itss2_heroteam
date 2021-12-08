@@ -10,7 +10,7 @@ class CardController extends Controller
     public function index(Request $request)
     {
         $cards = Card::where('collection_id', $request->id)->paginate(1);
-        $count = count($cards);
+        $count = count(Card::where('collection_id', $request->id)->get());
 
         return view('card.detail', compact('cards', 'count'));
     }
