@@ -4,7 +4,6 @@
             <div class="col d-flex flex-column justify-content-center">
                 <div class="card-front bg-secondary border mb-4">
                     <div class="text-center text-white my-4">
-                        <input class="count-card" value="{{ $count }}" hidden/>
                         <p>フロント</p>
                         <meta name="csrf-token" content="{!! csrf_token() !!}">
                         <textarea name="text-front" class="front" rows="12" cols="50" required>{{ $card->front }}</textarea>

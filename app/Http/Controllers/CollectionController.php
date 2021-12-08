@@ -27,12 +27,12 @@ class CollectionController extends Controller
         $collection = Collection::create($data);
         $collections = Collection::orderBy('created_at', 'desc')->get();
         $dataSchedule = [
-            'one' => 1,
+            'one' => 10,
             'two' => 5,
             'three' => 1,
             'four' => 2,
             'custom' => 3,
-            'default' => Carbon::now()->addMinutes(1),
+            'default' => Carbon::now()->addMinutes(10),
             'collection_id' => $collections[0]->id
         ];
         $schedule = Schedule::create($dataSchedule);
