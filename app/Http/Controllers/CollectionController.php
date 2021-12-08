@@ -104,7 +104,7 @@ class CollectionController extends Controller
     }
 
     public function showCollection(){
-        $collection = Collection::select('name', 'id')->get();
+        $collection = Collection::select('name', 'id')->where('user_id', auth()->id())->get();
         $now = Carbon::now();
 
         return view('collection.index-card', compact('collection', 'now'));

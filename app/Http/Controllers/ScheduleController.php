@@ -18,7 +18,7 @@ class ScheduleController extends Controller
 
     public function setSchedule(Request $request)
     {
-        $collection = Collection::where('id', $request->collection_id)->first();
+        $collection = Collection::where('id', $request->collection_id)->where('user_id', auth()->id())->first();
         $schedule = Schedule::where('collection_id', $collection->id)->first();
         $dataSchedule = ['default' => Carbon::now()->addMonths($schedule->custom) ];
         if ($collection->level != 0)
