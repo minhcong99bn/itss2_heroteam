@@ -131,7 +131,7 @@
                 success: function(response) {
                     var path = '/collection/create/' + response.id;
                     window.location.href = path;
-                    alert("コレクションの成功を生み出す!");
+                    // alert("コレクションの成功を生み出す!");
                 }
             });  
         });
@@ -198,7 +198,6 @@
                 success: function(response) {
                     var path = '/collection/create/' + $('.collection_id').val();
                     window.location.href = path;
-                    alert("カードの成功を作成する!");
                 }
             });  
         })
@@ -247,9 +246,11 @@
                 },
 
                 success: function(response) {
-                    $('.card-collection').children('.container').remove();
-                    alert("更新の成功!");
-                    $('.card-collection').append($(response).html());
+                    // $('.card-collection').children('.container').remove();
+                    // alert("更新の成功!");
+                    // $('.card-collection').append($(response).html());
+                    var path = '/collection/create/' + $('.collection_id').val();
+                    window.location.href = path;
                 }
             });  
         });

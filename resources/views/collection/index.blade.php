@@ -101,7 +101,6 @@
                   success: function(response) {
                       var path = '/collection/create/' + response.id;
                       window.location.href = path;
-                      alert("コレクションの成功を生み出す!");
                   }
               });  
           });
