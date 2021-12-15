@@ -21,7 +21,8 @@ class CollectionController extends Controller
     {
         $data = [
             'name' => $request->name,
-            'user_id' => auth()->id()
+            'user_id' => auth()->id(),
+            'level' => -1
         ];
 
         $collection = Collection::create($data);
@@ -104,7 +105,7 @@ class CollectionController extends Controller
     }
 
     public function showCollection(){
-        $collection = Collection::select('name', 'id')->where('user_id', auth()->id())->get();
+        $collection = Collection::select('name', 'id', 'level')->where('user_id', auth()->id())->orderBy('created_at', 'desc')->get();
         $now = Carbon::now();
 
         return view('collection.index-card', compact('collection', 'now'));

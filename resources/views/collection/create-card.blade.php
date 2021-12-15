@@ -22,7 +22,7 @@
 <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
         <div class="col-sm-6">
-            <a href="{{ route('dashboard') }}" type="button" class="btn btn-lg btn-success">ホーム</a>
+            <a href="{{ route('collection.index') }}" type="button" class="btn btn-lg btn-secondary">戻る</a>
         </div>
         <div class="col-sm-6 ">
             <div class="float-right">

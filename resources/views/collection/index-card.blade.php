@@ -65,10 +65,13 @@
             <select class="p-3" path="{{ route('card.index') }}" name="collection" id="select">
                 <option>コレクションを選択</option>
                 @foreach ($collection as $item)
-                    @if ($item->level != '0' && new DateTime($item->schedules->default) <= new DateTime($now) )
+                    @if ($item->level == -1)
                         <option value="{{$item->id}}">{{$item->name}}</option>
                     @endif
-                    @if ($item->level == "0" && new DateTime($item->schedules->custom) <= new DateTime($now))
+                    @if ($item->level != 0 && new DateTime($item->schedules->default) <= new DateTime($now) )
+                        <option value="{{$item->id}}">{{$item->name}}</option>
+                    @endif
+                    @if ($item->level == 0 && new DateTime($item->schedules->custom) <= new DateTime($now))
                         <option value="{{$item->id}}">{{$item->name}}</option>
                     @endif
                 @endforeach
