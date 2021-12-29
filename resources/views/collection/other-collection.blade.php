@@ -84,16 +84,27 @@
     
 </script>
 <style>
-	.navbar{
-	display: flex;
-	align-items: center;
-	width: 100%;
-	height: 100px;
-	margin-bottom: 10px;
-	background-color: rgb(124, 56, 7);
-	z-index: 100;
-}
-
+ * {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", Times, serif;
+    box-sizing: border-box;
+  }
+  ul {
+    list-style: none;
+  }
+  .navbar {
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    background-color: #823b40;
+    padding-left: 50px;
+    padding-right: 50px;
+    color: white;
+    align-items: center;
+  }
 .navbar .logo{
 	width: 100px;
 	height: 50px;
