@@ -105,36 +105,22 @@
     color: white;
     align-items: center;
   }
-.navbar .logo{
-	width: 100px;
-	height: 50px;
-	margin-left: 100px;
-	margin-right: 500px;
-}
-
-.navbar .user{
-	width: 50px;
-	height: 50px;
-	border-radius: 100%;
-	margin-right: 100px;
-	margin-left: 200px;
-}
-
-.navbar .btn{
-	width: 140px;
-	height: 40px;
-	margin-left: 50px;
-	border: none;
-	border-radius: 40px;
-	background-color: rgb(124, 56, 7);
-	color: white;
-	font-size: 1em;
-}
-
-.navbar .btn:hover{
-	background-color: rgb(235, 162, 149);
-}
-
+  .navbar img {
+    width: 150px;
+    height: 60px;
+  }
+  .nav-menu {
+    display: flex;
+    justify-content: space-between;
+  }
+  .nav-menu li {
+    width: 130px;
+    text-align: center;
+    margin: 20px;
+    font-size: 20px;
+    padding: 10px;
+    cursor: pointer;
+  }
 
 .main{
 	width: 100%;
