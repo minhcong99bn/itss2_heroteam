@@ -1,51 +1,120 @@
-<x-guest-layout>
-    <x-jet-authentication-card>
-        <x-slot name="logo">
-            <x-jet-authentication-card-logo />
-        </x-slot>
 
-        <x-jet-validation-errors class="mb-4" />
-
-        @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ session('status') }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/d3db06ed0b.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="./css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="form-left">
+            <div class="form-intro">
+                <div class="form-title">THE <span style="color: #AC373A">FLASH</span> APP</div>
+                <p class="form-text">Welcome back<br>Please login/sign up to your account</p>
             </div>
-        @endif
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
+                <input type="text" id="email" name="email" placeholder="Email"><br>
+                <input type="password" id="password" name="password" placeholder="Password"><br>
+                <button  class="btn  btn-primary p-5">Login</button>
+                <a href={{ route('register') }} type="submit" class="btn btn-success" id="signup" >Sign up</a>
+            </form>
+        </div>
+        <div class="form-right">
+            <img src="{{ asset('storage/images/logo.png') }} " alt="logo">
+            <p>Help you learn faster</p>
+        </div>
+    </div>
+</body>
+</html>
+<style>
+    *{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
 
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
+.container {
+    display: flex;
+}
+.form-left {
+    margin-top: 140px;
+    width: 700px;
+    padding-left: 100px;
+}
+.form-title {
+    font-size: 60px;
+    text-align: center;
+}
+.form-text {
+    font-size: 25px;
+    text-align: center;
+}
+.input-form{
+    justify-content: center;
+    padding-left: 80px;
+    padding-right: 80px;
+}
+.input-form input{
+    margin-top: 50px;
+    margin-bottom: 10px;
+    
+}
+.input-form input[type=text], input[type=password] , select {
+    width: 100%;
+    padding: 12px 20px;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+#email {
+    width: 100%;
+    padding: 12px 20px;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.input-form input[type="submit"] {
+    padding: 14px ;
+    margin-left: 50px;
+    width: 30%;
+    color: #AC373A;
+    border: 1px solid #AC373A;
+    background-color: transparent;
+    cursor: pointer;
+}
+input[type=submit]:hover {
+    background-color: #AC373A;
+    color: white;
+}
+.form-right{
+    margin-left: 150px
+}
+.form-right img {
+    width: 600px;
+    height: 250px;
+    margin: 130px 10px;
+}
+.form-right p{
+    font-size: 45px;
+    text-align: center;
+}
 
-            <div>
-                <x-jet-label for="email" value="{{ __('メール') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            </div>
-
-            <div class="mt-4">
-                <x-jet-label for="password" value="{{ __('パスワード') }}" />
-                <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-            </div>
-
-            {{-- <div class="block mt-4">
-                <label for="remember_me" class="flex items-center">
-                    <x-jet-checkbox id="remember_me" name="remember" />
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div> --}}
-
-            <div class="flex items-center justify-end mt-4">
-                {{-- @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif --}}
-                <x-jet-button class="ml-4">
-                    {{ __('ログイン') }}
-                </x-jet-button>
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="ml-4 btn btn-secondary text-sm text-gray-700 dark:text-gray-500">サインアップ</a>
-                @endif
-            </div>
-        </form>
-
-    </x-jet-authentication-card>
-</x-guest-layout>
+</style>
