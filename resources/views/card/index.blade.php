@@ -110,3 +110,110 @@
         }
     });  
 </script> --}}
+<style>
+    *{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', Times, serif;
+    box-sizing: border-box;
+}
+ul{
+    list-style: none;
+}
+.navbar{
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    background-color: #823B40;
+    padding-left: 50px;
+    padding-right: 50px;
+    color: white;
+    align-items: center;
+}
+.navbar img {
+    width: 150px;
+    height: 60px;
+}
+.nav-menu {
+    display: flex;
+    justify-content: space-between;
+}
+.nav-menu li{
+    width: 130px;
+    text-align: center;
+    margin: 20px;
+    font-size: 20px;
+    padding: 10px;
+    cursor: pointer;
+}
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 70px 50px; 
+}
+.container .slider-left img, .slider-right img{
+    height: 100px;
+    width: 100px;
+} 
+.flashcard{
+    width: 860px;
+    perspective: 10000px;
+}
+.flashcard-inner{
+    position: relative;
+    width: 100%;
+    height: 502px;
+    transition: transform 0.5s;
+    border: 1px solid gray;
+    transform-style: preserve-3d;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}  
+.card-back{
+    transform: rotateY(180deg);
+}
+.card-front .card-body{
+    height: 430px;
+    font-size: 60px;
+    display: flex;
+    padding-top: 160px;
+    justify-content: center;
+}
+.card-back .card-body{
+    width: 100%;
+    height: 430px;
+    padding-left: 50px;
+}
+.card-back .card-body p {
+    font-size: 20px;
+    line-height: 40px;
+    
+}
+.card-show-hide{
+    width: 100%;
+    height: 70px;
+    background-color: #E0E0E0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.card-show-hide button{
+    background-color: #519CF5;
+    border: none;
+    color: white;
+    padding: 6px 20px;
+    font-size: 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+</style>
