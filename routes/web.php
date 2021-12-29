@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\ScheduleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,13 +40,8 @@ Route::group([
     Route::get('/collection/index', [CollectionController::class, 'showCollection'])->name('collection.index-card');
     Route::get('/card/show', [CardController::class, 'index'])->name('card.index');
  
-    Route::get('/schedule', function () {
-        return view('collection.schedule');
-    })->name('collection.schedule');
+    Route::get('/schedule', [ScheduleController::class, 'index'])->name('collection.schedule');
+    Route::get('/card/easy', [ScheduleController::class, 'setSchedule'])->name('card.schedule.easy');
+    Route::post('/schedule/update', [ScheduleController::class, 'update'])->name('schedule.update');
+    Route::get('/schedule/collection', [ScheduleController::class, 'show'])->name('schedule.collection');
 });
-
-// Route::get('/collection/create', function () {
-//     return view('collection.create-collection');
-// })->name('collection.create-collection');
-
-

@@ -10,7 +10,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-sm navbar-dark sticky-top" style="background-color: #CC6666">
+<nav class="navbar navbar-expand-sm navbar-dark sticky-top  bg-dark" >
     <div class="col-sm-6">
         <a href="{{ route('dashboard') }}" type="button" class="btn btn-lg btn-success">ホーム</a>
     </div>

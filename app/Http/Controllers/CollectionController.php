@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Collection;
 use App\Models\Card;
-use Illuminate\Support\Facades\Request as FacadesRequest;
+use App\Models\Schedule;
+use Carbon\Carbon;
 
 class CollectionController extends Controller
 {
     public function index()
     {
-        $collections = Collection::where('user_id', auth()->id())->paginate(9);
+        $collections = Collection::where('user_id', auth()->id())->paginate(12);
+
         return view('collection.index', compact('collections'));
     }
 
@@ -19,9 +21,22 @@ class CollectionController extends Controller
     {
         $data = [
             'name' => $request->name,
-            'user_id' => auth()->id()
+            'user_id' => auth()->id(),
+            'level' => -1
         ];
+
         $collection = Collection::create($data);
+        $collections = Collection::orderBy('created_at', 'desc')->get();
+        $dataSchedule = [
+            'one' => 10,
+            'two' => 5,
+            'three' => 1,
+            'four' => 2,
+            'custom' => 3,
+            'default' => Carbon::now()->addMinutes(10),
+            'collection_id' => $collections[0]->id
+        ];
+        $schedule = Schedule::create($dataSchedule);
         
         return response()->json($collection);
     }
@@ -90,11 +105,9 @@ class CollectionController extends Controller
     }
 
     public function showCollection(){
-        $collection = Collection::select('name', 'id')->get();
-        $cards = Card::where('collection_id', $collection[0]->id)->paginate(1);
-        $count = count($cards);
+        $collection = Collection::select('name', 'id', 'level')->where('user_id', auth()->id())->orderBy('created_at', 'desc')->get();
+        $now = Carbon::now();
 
-        return view('collection.index-card', compact('collection', 'cards', 'count'));
+        return view('collection.index-card', compact('collection', 'now'));
     }
-
 }

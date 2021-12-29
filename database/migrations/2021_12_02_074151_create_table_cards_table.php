@@ -17,7 +17,7 @@ class CreateTableCardsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger('collection_id')->unsigned();
-            $table->foreign('collection_id')->references('id')->on('collections')->onDelete('cascade');;
+            $table->foreign('collection_id')->references('id')->on('collections')->onDelete('cascade');
             $table->longtext('front')->nullable();
             $table->longtext('back')->nullable();
         });

@@ -63,8 +63,17 @@
         <form id="myForm" action="">
             @csrf
             <select class="p-3" path="{{ route('card.index') }}" name="collection" id="select">
+                <option>コレクションを選択</option>
                 @foreach ($collection as $item)
-                <option value="{{$item->id}}">{{$item->name}}</option>
+                    @if ($item->level == -1)
+                        <option value="{{$item->id}}">{{$item->name}}</option>
+                    @endif
+                    @if ($item->level != 0 && new DateTime($item->schedules->default) <= new DateTime($now) )
+                        <option value="{{$item->id}}">{{$item->name}}</option>
+                    @endif
+                    @if ($item->level == 0 && new DateTime($item->schedules->custom) <= new DateTime($now))
+                        <option value="{{$item->id}}">{{$item->name}}</option>
+                    @endif
                 @endforeach
             </select>
         </form>
@@ -84,18 +93,18 @@
                     <div class="row ">
                         <div class="col-8 bg-secondary card-show" value="1" style="height: 600px">
                             <input class="input-data" value="1" hidden> 
-                            @foreach($cards as $card)
+                           
                                 <div class="card" onclick="flip()">
-                                    <div class="front">{{ $card->front }}</div>
-                                    <div class="back">{{ $card->back }}</div>
+                                    <div class="front">フロント</div>
+                                    <div class="back">裏側</div>
                                 </div>
-                            @endforeach
                         </div>
                         <div class="col-4 border d-flex flex-row align-items-center justify-content-center">
                             <div class="d-flex flex-column">
-                                <button class="btn btn-light border">簡単</button>
-                                <button class="btn btn-light border mt-5">難しい</button>
-                                <button class="btn btn-light border mt-5">非常に難しい</button>
+                                <input class="level" hidden value="{{ route('card.schedule.easy') }}">
+                                <button class="btn btn-light border btn-easy">簡単</button>
+                                <button class="btn btn-light border mt-5 btn-hard">難しい</button>
+                                <button class="btn btn-light border mt-5 btn-veryhard">とても難しい</button>
                             </div>
                         </div>
                     </div>
@@ -180,7 +189,6 @@
          $(document).ready(function(){
         $(document).on('click', '.prev-card', function(event){
             event.preventDefault(); 
-            console.log("linhchi");
             var page = $(".prev-card").val();
             var page = page--;
             fetch_data(page-1);
@@ -207,6 +215,84 @@
     }
 });
     
+    </script>
+    <script>
+        $(document).on('click', '.btn-easy', function() {
+            var path = $('.level').val();
+            var collectionId = $('#select').val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: path,
+                type: "get",
+                data: {
+                    'easy' : 1,
+                    'collection_id' : collectionId
+                },
+
+                success: function(response) {
+                    alert("レベル通過おめでとうございます。 あなたのレベルは :  " + response);
+                   var path = '/collection/index';
+                    window.location.href = path;
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).on('click', '.btn-hard', function() {
+            var path = $('.level').val();
+            var collectionId = $('#select').val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: path,
+                type: "get",
+                data: {
+                    'hard' : 1,
+                    'collection_id' : collectionId
+                },
+
+                success: function(response) {
+                    alert("レベルアップしません。 あなたのレベルは :  " + response);
+                   var path = '/collection/index';
+                    window.location.href = path;
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).on('click', '.btn-veryhard', function() {
+            var path = $('.level').val();
+            var collectionId = $('#select').val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: path,
+                type: "get",
+                data: {
+                    'veryhard' : 1,
+                    'collection_id' : collectionId
+                },
+
+                success: function(response) {
+                   alert("あなたはレベルダウンしました、あなたのレベルは :  " + response);
+                   var path = '/collection/index';
+                    window.location.href = path;
+                }
+            });
+        });
     </script>
 </body>
 </html>
