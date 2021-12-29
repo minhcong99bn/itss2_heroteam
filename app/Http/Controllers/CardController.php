@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Card;
+use Carbon\Carbon;
 
 class CardController extends Controller
 {
     public function index(Request $request)
     {
-        $cards = Card::where('collection_id', $request->id)->paginate(1);
-        $count = count(Card::where('collection_id', $request->id)->get());
+        $cards = Card::where('default', '<=', Carbon::now())->paginate(1);
 
-        return view('card.detail', compact('cards', 'count'));
+        return view('card.index', compact('cards'));
     }
 
     public function store(Request $request)

@@ -10,7 +10,7 @@ class Card extends Model
 {
     use HasFactory;
     protected $table = 'cards';
-    protected $fillable = ['front', 'back', 'collection_id'];
+    protected $fillable = ['front', 'back', 'collection_id', 'level', 'default'];
 
     public function collection()
     {
