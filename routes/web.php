@@ -23,22 +23,24 @@ use App\Http\Controllers\ScheduleController;
 Route::group([
     'middleware' => ['auth:sanctum', 'verified']
 ], function () {
-    Route::get('/', function () {
-        return view('collection.home');
-    })->name('dashboard');
-    
-    Route::get('/collection', [CollectionController::class, 'index'])->name('collection.index');
+    Route::get('/', [CollectionController::class, 'index'])->name('dashboard');
+    Route::get('/collection/show', [CollectionController::class, 'show'])->name('collection.show');
     Route::post('/collection', [CollectionController::class, 'store'])->name('collection.store');
+    Route::get('/getshare', [CollectionController::class, 'getShare'])->name('collection.getshare');
+    Route::get('/collection', [CollectionController::class, 'showOtherCollection'])->name('collection.showother');
+    Route::get('/card', [CardController::class, 'index'])->name('card.index');
+    Route::get('/card/{id}', [CollectionController::class, 'showCardByCollection'])->name('collection.card');
+
 
     Route::get('/collection/create/{id}', [CollectionController::class, 'createCard'])->name('collection.create-collection');
-    Route::post('/collection/update/{id}', [CollectionController::class, 'update'])->name('collection.update');
+    Route::post('/collection/update', [CollectionController::class, 'update'])->name('collection.update');
     Route::post('/collection/card/store', [CollectionController::class, 'storeCard'])->name('card.store');
     Route::get('/collection/card/show', [CollectionController::class, 'showCard'])->name('collection.show-card');
     Route::post('/collection/card/update', [CollectionController::class, 'updateCard'])->name('collection.update-card');
     Route::delete('/collection/card/destroy', [CollectionController::class, 'deleteCard'])->name('collection.delete-card');
     Route::delete('/collection/destroy', [CollectionController::class, 'delete'])->name('collection-delete');
     Route::get('/collection/index', [CollectionController::class, 'showCollection'])->name('collection.index-card');
-    Route::get('/card/show', [CardController::class, 'index'])->name('card.index');
+    // Route::get('/card/show', [CardController::class, 'index'])->name('card.index');
  
     Route::get('/schedule', [ScheduleController::class, 'index'])->name('collection.schedule');
     Route::get('/card/easy', [ScheduleController::class, 'setSchedule'])->name('card.schedule.easy');

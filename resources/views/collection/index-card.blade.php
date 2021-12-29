@@ -182,8 +182,8 @@
     });
     }
 });
-    </script>
-    <script>
+</script>
+<script>
          $(document).ready(function(){
         $(document).on('click', '.prev-card', function(event){
             event.preventDefault(); 
@@ -213,7 +213,7 @@
     }
 });
     
-    </script>
+</script>
     <script>
         $(document).on('click', '.btn-easy', function() {
             var path = $('.level').val();
