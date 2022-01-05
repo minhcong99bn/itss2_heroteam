@@ -30,7 +30,7 @@ class ScheduleController extends Controller
                 }
                 else {
                     $data = ['level' => $collection->level + 1];
-                    if ( $collection->level == -1)  $data = ['level' => 1];
+                    if ($collection->level == -1)  $data = ['level' => 1];
                     $collection->update($data);
                     if ($collection->level == 2) {
                         $dataSchedule['default'] = Carbon::now()->addDays($schedule->two);

@@ -1,41 +1,44 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="container">
-    <div class="collection-list mr-5">
+<section class="d-flex justify-content-around mt-5 px-5">
+    <div class="collection-list mr-5 ml-5 col-4">
         <div class="d-flex flex-row justify-content-between">
             <div class="colname">Collection List</div>
-            <div class="mt-4 col-2">
+            <div class="mt-1" style="margin-right: 3%;">
                 <button data-toggle="modal" data-target="#exampleModalCenter" type="button" class = "btn btn-lg btn-primary">
                 <i class="fas fa-plus pl-5" style="font-size: 25px;"></i>
                 </button>
             </div>
         </div>
-      <div class="list">
-        @foreach ($collections as $collection)
-            <div class="content ml-3 collection-{{ $collection->id }}">
-                <a type="button" data-id="{{ $collection->id }}" data-path="{{ route('collection.show') }}" class="px-5 pt-4 collection">{{ $collection->name }}</a>
-            </div>
-        @endforeach
+      @if (count($collections) > 0)
+        <div class="list">
+          @foreach ($collections as $collection)
+          <a type="button" data-id="{{ $collection->id }}" style="width: 97%;" data-path="{{ route('collection.show') }}" class="px-5 content pt-4 collection collection-{{ $collection->id }}">    
+                <div class="ml-3">
+                  {{ $collection->name }}
+                </div>
+          </a>
+          @endforeach
+        </div>
+      @endif
+    </div>
+    @if (count($collections) > 0)
+      <div class="collection-detail">
       </div>
-    </div>
-    <div class="collection-detail">
-    </div>
+    @endif
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" style="font-size: 30px; color:black; font-weight:800;" id="exampleModalLongTitle">Create New Collection</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
             </div>
             <div class="modal-body row my-3  align-items-center">
                 <meta name="csrf-token" content="{!! csrf_token() !!}">
                 <label for="email" class="mt-2"><b style="color: black; font-size:20px;">Collection of Name</b></label>
                 <input type="text" class="form-control collection-name" placeholder="Enter Name" name="name" required>
                 <label for="psw" class="mt-3"><b style="color: black; font-size:20px;">Description</b></label>
-                <input type="text"  placeholder="description" class="mr-2 col-10 collection-name form-control description" required>
+                <input type="text"  placeholder="description" style="padding-top: 15px; padding-bottom: 15px;" class="mr-2 col-10 collection-name form-control description" required>
                 <label for="psw" class="mt-3"><b style="color: black; font-size:20px;">Status</b></label>
                 <select name="status" class="form-control status">
                     <option value="1">Public</option>
@@ -55,9 +58,6 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" style="font-size: 30px; color:black; font-weight:800;" id="exampleModalLongTitle">Edit Collection</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
             </div>
             <div class="modal-body row my-3  align-items-center">
                 <meta name="csrf-token" content="{!! csrf_token() !!}">
@@ -138,6 +138,7 @@
 <script>
     $(document).on('click', '.updated', function() {
         $('.schedule-save').toggle();
+        $(".schedule-input").removeAttr('disabled');
         $(this).toggle();
     });
     
@@ -165,6 +166,7 @@
               success: function(response) {
                 $('.schedule-save').toggle();
                 $('.updated').toggle();
+                  $(".schedule-input").attr('disabled','disabled');
                   alert("Edit schedule success!");
               }
           });
@@ -233,7 +235,6 @@
  * {
     margin: 0;
     padding: 0;
-    font-family: "Poppins", Times, serif;
     box-sizing: border-box;
   }
   ul {
@@ -289,30 +290,26 @@
   }
   .collection-list .colname {
     margin-bottom: 30px;
-  
     color: #823b40;
     height: 50px;
-    font-size: 32px;
+    font-size: 36px !important;
+    font-weight: 700;
   }
   .collection-list .list {
     overflow: scroll;
-    width: 100%;
+    width: 97%;
     height: 85%;
     margin-top: 10px;
   }
-  .collection-list .list .content {
-    margin-top: 20px;
-    width: 100%;
+  .collection-list .list a {
+    width: 97%;
     height: 80px;
     font-size: 30px;
     mix-blend-mode: normal;
     border-radius: 10px;
     background-image: url("../../storage/app/public/images/image1.png");
-    a {
-      text-decoration: none !important;
-      color: white;
-      padding-top : 15px;
-    }
+    text-decoration: none !important;
+    color: white;    
   }
   
   .collection-detail {
@@ -328,9 +325,9 @@
     font-size: 32px;
   }
   .collection-detail .setting-menu {
-    display: flex;
+    /* display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; */
   }
   .collection-detail .setting-menu li {
     text-align: center;
@@ -364,19 +361,13 @@
   }
   
   .collection-detail .stat-schedule * .colname {
-    margin: 10px;
-    width: 259px;
-    height: 72px;
-    font-family: Roboto;
-    font-size: 32px;
     color: #4e4b66;
   }
   .collection-detail .stat-schedule * .stat-detail {
-    // background: linear-gradient(to right, #e69a8d 50%, white 50%);
+    /* background: linear-gradient(to right, #e69a8d 50%, white 50%); */
     border: 1px solid gray;
     border-radius: 10px;
     margin: 10px;
-    width: 259px;
     height: 50px;
     font-size: 20px;
     color: #4e4b66;

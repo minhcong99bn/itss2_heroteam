@@ -16,12 +16,6 @@
                 <div class="form-group has-search mt-5">
                     <input type="text"  class="form-control" style="padding: 23px; font-size: 22px;" placeholder="Search">
                 </div>
-                <div class="d-flex justify-content-end" style>
-                    <button data-toggle="modal" data-target="#exampleModalCenter" type="button" class = "btn btn-lg btn-primary add-card">
-                    <i class="fas fa-plus pl-5" style="font-size: 12px;"></i>
-                    </button>
-                    <button data-toggle="modal" data-target="#createTag" type="button" class = "btn btn-success add-tag p-2" style="margin-left: 20px;">Create Tag</button>
-                </div>
             </div>
             <div class="col-12 mt-5">
                 <table class="table mt-1 table-bordered" style="border-width: 1;">
@@ -32,7 +26,7 @@
                     </tr>
                     @foreach ($cards as $card)
                         <tr>
-                            <td class="view-card" action="{{ route('card-show', $card->id) }}"><a   style="color:black; text-decoration: none; font-weight: 600;">{{ $card->front }}</a></td>
+                            <td class="view-card" action="{{ route('other-card-show', $card->id) }}"><a   style="color:black; text-decoration: none; font-weight: 600;">{{ $card->front }}</a></td>
                             <td>{{ $card->level = -1 ? '#New' : $card->default }}</td>
                             <td>
                                 <ul class="tags">
@@ -51,6 +45,7 @@
         <div class="buttoon">
           <button class="button button1 btn-front">Front</button>
           <button class="button button2 btn-back">Back</button>
+          <button class="button button3 btn-back">Clone</button>
         </div>
         <div class="tags">
             <select class="fav_clr form-control mt-5" name="tag[]" multiple="multiple">
@@ -495,49 +490,4 @@ $('.fav_clr').on("select2:select", function (e) {
             }
         });  
     });
-</script>
-<script>
-    $(document).on('click', '.edit-card', function() {
-       $('.text-card').toggle();
-       $('.text-front').toggle();
-       $('.text-back').toggle();
-   });
-   $(document).on('click', '.save-card', function() {     
-       $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-        });
-       $.ajax({
-           url: $(this).attr("action"),
-           type: "post",
-           data : {
-               'front' : $('.text-front').val(),
-               'back' : $('.text-back').val(),
-               'tag' : $('.select-tag').val()
-           },
-            success: function(response) {
-                window.location.href = $('.searchby').attr("action");
-           }
-       });  
-   });
-   $(document).on('click', '.delete-card', function() { 
-       console.log($('.searchby').attr("action"));    
-       $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-        });
-       $.ajax({
-           url: $(this).attr("action"),
-           type: "delete",
-           data : {
-            'tag' : $('.select-tag').val()
-           },
-            success: function(response) {
-                alert("delete success!")
-                window.location.href = $('.searchby').attr("action");
-           }
-       });  
-   });
 </script>

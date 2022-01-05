@@ -3,7 +3,7 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: "Poppins", Times, serif;
+  font-family: sans-serif;
   box-sizing: border-box;
 }
 
@@ -152,9 +152,7 @@ ul {
 
 .collection-detail .stat-schedule * .colname {
   margin: 10px;
-  width: 259px;
   height: 72px;
-  font-family: Roboto;
   font-size: 32px;
   color: #4e4b66;
 }
@@ -163,7 +161,6 @@ ul {
   border: 1px solid gray;
   border-radius: 10px;
   margin: 10px;
-  width: 259px;
   height: 50px;
   font-size: 20px;
   color: #4e4b66;
@@ -176,267 +173,6 @@ ul {
 
 .collection-detail .stat-schedule * .stat-detail .tail {
   color: #4e4b66;
-}
-
-.navbar {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 100px;
-  margin-bottom: 10px;
-  background-color: #7c3807;
-  z-index: 100;
-}
-
-.navbar .logo {
-  width: 100px;
-  height: 50px;
-  margin-left: 100px;
-  margin-right: 500px;
-}
-
-.navbar .user {
-  width: 50px;
-  height: 50px;
-  border-radius: 100%;
-  margin-right: 100px;
-  margin-left: 200px;
-}
-
-.navbar .btn {
-  width: 140px;
-  height: 40px;
-  margin-left: 50px;
-  border: none;
-  border-radius: 40px;
-  background-color: #7c3807;
-  color: white;
-  font-size: 1em;
-}
-
-.navbar .btn:hover {
-  background-color: #eba295;
-}
-
-.main {
-  width: 100%;
-  display: flex;
-}
-
-.left-main {
-  width: 65%;
-  display: flex;
-}
-
-.left-main .sidebar {
-  width: 50%;
-  padding-left: 100px;
-}
-
-.sidebar .search {
-  width: 280px;
-  margin-top: 50px;
-  margin-bottom: 10px;
-  height: 30px;
-  font-size: 1em;
-}
-
-.sidebar h1, .sidebar .h1 {
-  font-size: 2em;
-  margin-bottom: 10px;
-}
-
-.tag {
-  width: 60%;
-  height: 450px;
-  background-color: #acabab;
-  padding: 20px 10px;
-  overflow-y: scroll;
-  scrollbar-width: thin 5px;
-}
-
-.tag div {
-  height: 70px;
-}
-
-.tag div input {
-  width: 20px;
-  height: 20px;
-}
-
-.tag div label {
-  margin-left: 40px;
-  font-size: 1em;
-  font-weight: bold;
-  color: whitesmoke;
-  text-align: center;
-}
-
-.course {
-  margin-top: 50px;
-  width: 50%;
-  height: 550px;
-  overflow-y: scroll;
-}
-
-.course p {
-  display: flex;
-  position: relative;
-  margin-top: 10px;
-  width: 80%;
-  height: 100px;
-  background-color: #db5369;
-  color: white;
-  font-size: 1.3em;
-  align-items: center;
-  padding-left: 20px;
-  border-radius: 20px;
-}
-
-.course p button {
-  position: absolute;
-  right: 10px;
-  width: 100px;
-  background-color: aqua;
-}
-
-.right-main {
-  width: 35%;
-  padding-top: 50px;
-}
-
-.right-main div {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 50px;
-  margin-top: 10px;
-}
-
-.right-main div h1, .right-main div .h1 {
-  font-size: 1.3em;
-}
-
-.right-main p {
-  margin-left: 50px;
-  width: 270px;
-  display: block;
-}
-
-.right-main p1 {
-  display: flex;
-  margin-left: 50px;
-  width: 270px;
-  background-color: brown;
-  color: white;
-}
-
-.right-main des {
-  height: 50px;
-  background-color: brown;
-}
-
-.right-main content {
-  background-color: white;
-}
-
-ul {
-  list-style: none;
-}
-
-.navbar img {
-  width: 150px;
-  height: 60px;
-}
-
-.nav-menu {
-  display: flex;
-  justify-content: space-between;
-}
-
-.nav-menu li {
-  width: 130px;
-  text-align: center;
-  margin: 20px;
-  font-size: 20px;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 70px 50px;
-}
-
-.container .slider-left img, .slider-right img {
-  height: 100px;
-  width: 100px;
-}
-
-.flashcard {
-  width: 860px;
-  perspective: 10000px;
-}
-
-.flashcard-inner {
-  position: relative;
-  width: 100%;
-  height: 502px;
-  transition: transform 0.5s;
-  border: 1px solid gray;
-  transform-style: preserve-3d;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-}
-
-.card-front, .card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-.card-back {
-  transform: rotateY(180deg);
-}
-
-.card-front .card-body {
-  height: 430px;
-  font-size: 60px;
-  display: flex;
-  padding-top: 160px;
-  justify-content: center;
-}
-
-.card-back .card-body {
-  width: 100%;
-  height: 430px;
-  padding-left: 50px;
-}
-
-.card-back .card-body p {
-  font-size: 20px;
-  line-height: 40px;
-}
-
-.card-show-hide {
-  width: 100%;
-  height: 70px;
-  background-color: #E0E0E0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.card-show-hide button {
-  background-color: #519CF5;
-  border: none;
-  color: white;
-  padding: 6px 20px;
-  font-size: 20px;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 /*!

@@ -9,13 +9,13 @@
                 </svg>
             </button>
         </div>
-        <div class="flashcard">
+        <div class="flashcard" path="{{ route('card.index') }}">
             <div class="flashcard-inner">
                 <div class="card-front">
                     <div class="card-body">
                         <p>{{ count($cards)>0 ? $cards[0]->front : 'Front'}}</p>
                     </div>
-                    <div class="card-show-hide">
+                    <div class="card-show card-show-hide" data-id="{{ count($cards)>0 ? $cards[0]->id: '' }}" action="{{ route('card-update-schedule') }}">
                         <button type="button" class="show-hide" onclick="flip()">Show answer</button>
                     </div>
                 </div>
@@ -26,7 +26,18 @@
                         </div>
                     </div>
                     <div class="card-show-hide">
-                        <button type="button" class="show-hide" onclick="flipBack()">Hide answer</button>
+                        <div class="d-flex justify-content-around">
+                            <div>
+                                <button class="btn-easy" style=" background-color: #65C466;">Easy</button>
+                            </div>
+                            <div>
+                                <button  class="btn-hard" style="background-color: #D8A522;">Hard</button>
+                            </div>
+                            <div>
+                                <button  class="btn-veryhard" style="background-color: #AC373A">Very Hard</button>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -63,25 +74,20 @@
 
     function fetch_data(page)
     {
-        var id = $("#select").val();
-        var path = $("#select").attr("path"); 
+        var path = $(".flashcard").attr("path");
     $.ajax({
     url: path + "?page="+page,
     type: "get",
-    data: {
-        'id' : id,
-    },
     success:function(data)
     {
-        $('.card-show').children('.card').remove();
-        $('.card-show').append($(data).html());
+        window.location.href = path + "?page="+page;
         $('.prev-card').val(page);
     }
     });
     }
 });
 </script>
-    {{-- <script>
+<script>
              $(document).ready(function(){
             $(document).on('click', '.prev-card', function(event){
                 event.preventDefault(); 
@@ -92,24 +98,93 @@
     
             function fetch_data(page)
             {
-                var id = $("#select").val();
-                var path = $("#select").attr("path"); 
-            $.ajax({
-            url: path + "?page="+page,
-            type: "get",
-            data: {
-                'id' : id,
-            },
-            success:function(data)
-            {
-                $('.card-show').children('.card').remove();
-                $('.card-show').append($(data).html());
-                $('.prev-card').val(page);
-            }
-            });
+                var path = $(".flashcard").attr("path");
+    $.ajax({
+    url: path + "?page="+page,
+    type: "get",
+    success:function(data)
+    {
+        window.location.href = path + "?page="+page;
+        $('.prev-card').val(page);
+    }
+    });
         }
     });  
-</script> --}}
+</script>
+<script>
+    $(document).on('click', '.btn-veryhard', function() {
+        var id = $('.card-show').attr("data-id");
+        var path = $('.card-show').attr("action");
+        console.log(path);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            url: path,
+            type: "get",
+            data: {
+                'veryhard' : 1,
+                'id' : id
+            },
+
+            success: function(response) {
+                console.log(response);
+               var path = '/card';
+                window.location.href = path;
+            }
+        });
+    });
+    $(document).on('click', '.btn-hard', function() {
+        var id = $('.card-show').attr("data-id");
+        var path = $('.card-show').attr("action");
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            url: path,
+            type: "get",
+            data: {
+                'hard' : 1,
+                'id' : id
+            },
+
+            success: function(response) {
+               var path = '/card';
+                window.location.href = path;
+            }
+        });
+    });
+    $(document).on('click', '.btn-easy', function() {
+        var id = $('.card-show').attr("data-id");
+        var path = $('.card-show').attr("action");
+        console.log(id);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            url: path,
+            type: "post",
+            data: {
+                'easy' : 1,
+                'id' : id
+            },
+
+            success: function(response) {
+               var path = '/card';
+                window.location.href = path;
+            }
+        });
+    });
+</script>
 <style>
     *{
     margin: 0;
@@ -198,7 +273,7 @@ ul{
     line-height: 40px;
     
 }
-.card-show-hide{
+.card-show{
     width: 100%;
     height: 70px;
     background-color: #E0E0E0;
@@ -206,7 +281,7 @@ ul{
     align-items: center;
     justify-content: center;
 }
-.card-show-hide button{
+.card-show button{
     background-color: #519CF5;
     border: none;
     color: white;
@@ -215,5 +290,18 @@ ul{
     border-radius: 4px;
     cursor: pointer;
 }
-
+.card-show-hide{
+    width: 100%;
+    height: 70px;
+    background-color: #E0E0E0;
+}
+.card-show-hide button{
+    margin-top: 18px;
+    border: none;
+    color: white;
+    padding: 6px 20px;
+    font-size: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
 </style>

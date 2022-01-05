@@ -8,47 +8,26 @@
 					<input type="search" name="" class="search form-control " placeholder="search...">
 					<h1>TAG</h1>
 					<div class="tag">
-						<div>
-						    <input type="checkbox" name="">
-						    <label>ENGLISH</label>
-						</div>
-						<div>
-						    <input type="checkbox" name="">
-						    <label>MATH</label>
-						</div>
-						<div>
-						    <input type="checkbox" name="">
-						    <label>LITERATURE</label>
-						</div>
-						<div>
-						    <input type="checkbox" name="">
-						    <label>ANIMALS</label>
-						</div>
-						<div>
-						    <input type="checkbox" name="">
-						    <label>ENGLISH</label>
-						</div>
-						<div>
-						    <input type="checkbox" name="">
-						    <label>ENGLISH</label>
-						</div>
-						<div>
-						    <input type="checkbox" name="">
-						    <label>ENGLISH</label>
-						</div>
-						<div>
-						    <input type="checkbox" name="">
-						    <label>ENGLISH</label>
-						</div>
-						<div>
-						    <input type="checkbox" name="">
-						    <label>ENGLISH</label>
-						</div>
+						@foreach ($tags as $tag)
+							<div>
+								<input type="checkbox" name="">
+								<label>{{ $tag->name }}</label>
+							</div>
+						@endforeach
 					</div>
 				</div>
 				<div class="course">
 					@foreach($collections as $collection)
-						<p>{{ $collection->name }}<button class="view" data-path="{{ route('collection.showother') }}" data-id="{{ $collection->id }}" >View All >></button></p>
+					<div class="all-collection">
+						<div class="pt-2">
+							<p>{{ $collection->name }}</p>
+						</div>
+						<div class="d-flex justify-content-end align-items-end">
+							<a class="view text-end" data-path="{{ route('collection.showother') }}" data-id="{{ $collection->id }}" >
+								<img style="width: 70%;" src="{{ asset('storage/images/viewall.png') }}" alt="View all" />
+							</a>
+						</div>
+					</div>
 					@endforeach
 				</div>
 			</div>
@@ -177,22 +156,20 @@
 
 .course{
 	margin-top: 50px;
-	width: 50%;
+	width: 40%;
 	height: 550px;
 	overflow-y: scroll;
 }
 
-.course p{
-	display: flex;
-	position: relative;
+.all-collection{
+	
 	margin-top: 10px;
-	width: 80%;
+	width: 92%;
 	height: 100px;
 	background-color: rgb(219, 83, 105);
 	color: white;
 	font-size: 1.3em;
-	align-items: center;
-	padding-left: 20px;
+	padding-left: 28px;
 	border-radius: 20px;
 }
 

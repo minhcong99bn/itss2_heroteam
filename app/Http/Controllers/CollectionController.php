@@ -7,6 +7,7 @@ use App\Models\Collection;
 use App\Models\Card;
 use App\Models\Schedule;
 use Carbon\Carbon;
+use App\Models\Tab;
 
 class CollectionController extends Controller
 {
@@ -21,8 +22,8 @@ class CollectionController extends Controller
     {
         $collection = Collection::where('id', $request->id)->first();
         $totalCard = Card::where('collection_id', $request->id)->count();
-        $newCard = Card::where('collection_id', $request->id)->where('level', 0)->count();
-        $dueCard = Card::where('collection_id', $request->id)->where('default', Carbon::today())->count();
+        $newCard = Card::where('collection_id', $request->id)->where('level', -1)->count();
+        $dueCard = Card::where('collection_id', $request->id)->where('default','<=', Carbon::now())->count();
         $schedule = Schedule::where('collection_id', $request->id)->first();
 
         return view('collection.collection-detail', compact('collection', 'totalCard', 'newCard', 'dueCard', 'schedule'));
@@ -32,8 +33,8 @@ class CollectionController extends Controller
     {
         $collection = Collection::where('id', $request->id)->first();
         $totalCard = Card::where('collection_id', $request->id)->count();
-        $newCard = Card::where('collection_id', $request->id)->where('level', 0)->count();
-        $dueCard = Card::where('collection_id', $request->id)->where('default', Carbon::today())->count();
+        $newCard = Card::where('collection_id', $request->id)->where('level', -1)->count();
+        $dueCard = Card::where('collection_id', $request->id)->where('default','<=', Carbon::now())->count();
         $schedule = Schedule::where('collection_id', $request->id)->first();
 
         return view('collection.view-collection', compact('collection', 'totalCard', 'newCard', 'dueCard', 'schedule'));
@@ -41,9 +42,11 @@ class CollectionController extends Controller
 
     public function getShare(Request $request)
     {
-        $collections = Collection::where('user_id', '!=', auth()->id())->get();
+        // 1: public
+        $collections = Collection::where('user_id', '!=', auth()->id())->where('status', 1)->get();
+        $tags = Tab::get();
         
-        return view('collection.other-collection', compact('collections'));
+        return view('collection.other-collection', compact('collections', 'tags'));
     }
 
     public function store(Request $request)
@@ -85,9 +88,10 @@ class CollectionController extends Controller
 
     public function showCardByCollection($id)
     {
-        $cards = Card::where('collection_id', $id)->get();
+        $cards = Card::where('collection_id', $id)->orderBy('updated_at', 'desc')->get();
+        $tags = Tab::get();
         
-        return view('card.edit-card', compact('cards', 'id'));
+        return view('card.edit-card', compact('cards', 'id', 'tags'));
     }
     
     public function createCard($id)
@@ -152,4 +156,12 @@ class CollectionController extends Controller
 
         return view('collection.index-card', compact('collection', 'now'));
     }
+
+    public function viewCollection($id)
+    {
+        $tags = Tab::get();
+        $cards = Card::where('collection_id', $id)->get();
+
+        return view('collection.view-other-collection', compact('cards', 'tags', 'id'));
+    } 
 }
