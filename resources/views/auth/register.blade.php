@@ -44,7 +44,7 @@
                 <p class="form-text"  style="font-weight: 700;">Welcome back</p>
                 <p class="text-center" style="font-weight: 700; font-size: 24px;">Please login/sign up to your account</p>
             </div>
-            <form method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('register') }}">
                 @csrf
                 <input type="text" id="email" name="name" placeholder="Username" style="margin-top:20px" type="text" :value="old('name')" required autofocus autocomplete="name"><br>
                 <input id="email" name="email" placeholder="Email Address" style="margin-top:20px" type="email" :value="old('email')" required><br>
