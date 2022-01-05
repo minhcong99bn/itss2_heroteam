@@ -25,6 +25,6 @@ class AddColoumnUserIdCardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropColumns(['user_id']);
+        Schema::dropColumn(['user_id']);
     }
 }
