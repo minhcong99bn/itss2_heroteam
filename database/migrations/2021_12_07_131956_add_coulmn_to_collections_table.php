@@ -26,7 +26,7 @@ class AddCoulmnToCollectionsTable extends Migration
     public function down()
     {
         Schema::table('collections', function (Blueprint $table) {
-           $table->dropColumns(['level']);
+           $table->dropColumn(['level']);
         });
     }
 }
