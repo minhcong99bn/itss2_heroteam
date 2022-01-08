@@ -93,68 +93,12 @@ class CollectionController extends Controller
         
         return view('card.edit-card', compact('cards', 'id', 'tags'));
     }
-    
-    public function createCard($id)
-    {
-        $collection = Collection::findOrFail($id);
-        $cards = Card::where('collection_id', $id)->orderBy('updated_at','Desc')->paginate(6);
-
-        return view('collection.create-card', compact('collection', 'cards'));
-    }
-
-    public function storeCard(Request $request)
-    {
-        $data = [
-            'front' => $request->front,
-            'back' => $request->back,
-            'collection_id' => $request->collection_id,
-        ];
-
-        $card = Card::create($data);
-        
-        return response()->json();
-    }
-
-    public function showCard(Request $request)
-    {
-        $card = Card::findOrFail($request->id);
-
-        return view('collection.show-card', compact('card'));
-    }
-
-    public function updateCard(Request $request)
-    {
-        $card = Card::find($request->id)
-            ->update(
-                [
-                    'front'=> $request->front,
-                    'back' => $request->back
-                ]
-            );
-        $card = Card::findOrFail($request->id);
-
-        return view('collection.show-card', compact('card'));
-    }
-
-    public function deleteCard(Request $request)
-    {
-        Card::destroy($request->id);
-
-        return view('collection.delete-card');
-    }
 
     public function delete(Request $request)
     {
         Collection::destroy($request->id);
 
         return response()->json();
-    }
-
-    public function showCollection(){
-        $collection = Collection::select('name', 'id', 'level')->where('user_id', auth()->id())->orderBy('created_at', 'desc')->get();
-        $now = Carbon::now();
-
-        return view('collection.index-card', compact('collection', 'now'));
     }
 
     public function viewCollection($id)

@@ -40,18 +40,7 @@ Route::group([
     Route::post('card/schedule',[CardController::class, 'updateCardSchedule'])->name('card-update-schedule');
     Route::get('/collection/{id}', [CollectionController::class, 'viewCollection'])->name('collection-view');
 
-    Route::get('/collection/create/{id}', [CollectionController::class, 'createCard'])->name('collection.create-collection');
     Route::post('/collection/update', [CollectionController::class, 'update'])->name('collection.update');
-    Route::post('/collection/card/store', [CollectionController::class, 'storeCard'])->name('card.store');
-    Route::get('/collection/card/show', [CollectionController::class, 'showCard'])->name('collection.show-card');
-    Route::post('/collection/card/update', [CollectionController::class, 'updateCard'])->name('collection.update-card');
-    Route::delete('/collection/card/destroy', [CollectionController::class, 'deleteCard'])->name('collection.delete-card');
     Route::delete('/collection/destroy', [CollectionController::class, 'delete'])->name('collection-delete');
-    Route::get('/collection/index', [CollectionController::class, 'showCollection'])->name('collection.index-card');
-    // Route::get('/card/show', [CardController::class, 'index'])->name('card.index');
- 
-    Route::get('/schedule', [ScheduleController::class, 'index'])->name('collection.schedule');
-    Route::get('/card/easy', [ScheduleController::class, 'setSchedule'])->name('card.schedule.easy');
     Route::post('/schedule/update', [ScheduleController::class, 'update'])->name('schedule.update');
-    Route::get('/schedule/collection', [ScheduleController::class, 'show'])->name('schedule.collection');
 });
