@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCoulmnToCollectionsTable extends Migration
+class CreateTabsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddCoulmnToCollectionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('collections', function (Blueprint $table) {
-            $table->integer('level')->default(1);
+        Schema::create('tabs', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ class AddCoulmnToCollectionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('collections', function (Blueprint $table) {
-           $table->dropColumn(['level']);
-        });
+        Schema::dropIfExists('tabs');
     }
 }

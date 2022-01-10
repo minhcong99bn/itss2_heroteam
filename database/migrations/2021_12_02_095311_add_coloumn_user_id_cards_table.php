@@ -25,6 +25,8 @@ class AddColoumnUserIdCardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropColumns(['user_id']);
+        Schema::table('collections', function (Blueprint $table) {
+            $table->dropColumn(['user_id']);
+         });
     }
 }

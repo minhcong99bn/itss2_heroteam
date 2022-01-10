@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCoulmnToCollectionsTable extends Migration
+class Addcoulmn extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddCoulmnToCollectionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('collections', function (Blueprint $table) {
-            $table->integer('level')->default(1);
+        Schema::table('cards', function (Blueprint $table) {
+            $table->integer('level')->default(0);
+            $table->dateTime('default')->nullable();
         });
     }
 
@@ -25,8 +26,8 @@ class AddCoulmnToCollectionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('collections', function (Blueprint $table) {
-           $table->dropColumn(['level']);
+        Schema::table('cards', function (Blueprint $table) {
+            $table->dropColumn(['level', 'default']);
         });
     }
 }

@@ -7,20 +7,54 @@ use App\Models\Collection;
 use App\Models\Card;
 use App\Models\Schedule;
 use Carbon\Carbon;
+use App\Models\Tab;
 
 class CollectionController extends Controller
 {
     public function index()
     {
-        $collections = Collection::where('user_id', auth()->id())->paginate(12);
+        $collections = Collection::where('user_id', auth()->id())->orderBy('created_at', 'desc')->get();
 
-        return view('collection.index', compact('collections'));
+        return view('collection.home', compact('collections'));
+    }
+
+    public function show(Request $request)
+    {
+        $collection = Collection::where('id', $request->id)->first();
+        $totalCard = Card::where('collection_id', $request->id)->count();
+        $newCard = Card::where('collection_id', $request->id)->where('level', -1)->count();
+        $dueCard = Card::where('collection_id', $request->id)->where('default','<=', Carbon::now())->count();
+        $schedule = Schedule::where('collection_id', $request->id)->first();
+
+        return view('collection.collection-detail', compact('collection', 'totalCard', 'newCard', 'dueCard', 'schedule'));
+    }
+
+    public function showOtherCollection(Request $request)
+    {
+        $collection = Collection::where('id', $request->id)->first();
+        $totalCard = Card::where('collection_id', $request->id)->count();
+        $newCard = Card::where('collection_id', $request->id)->where('level', -1)->count();
+        $dueCard = Card::where('collection_id', $request->id)->where('default','<=', Carbon::now())->count();
+        $schedule = Schedule::where('collection_id', $request->id)->first();
+
+        return view('collection.view-collection', compact('collection', 'totalCard', 'newCard', 'dueCard', 'schedule'));
+    }
+
+    public function getShare(Request $request)
+    {
+        // 1: public
+        $collections = Collection::where('user_id', '!=', auth()->id())->where('status', 1)->get();
+        $tags = Tab::get();
+        
+        return view('collection.other-collection', compact('collections', 'tags'));
     }
 
     public function store(Request $request)
     {
         $data = [
             'name' => $request->name,
+            'description' => $request->description,
+            'status' => $request->status,
             'user_id' => auth()->id(),
             'level' => -1
         ];
@@ -29,10 +63,10 @@ class CollectionController extends Controller
         $collections = Collection::orderBy('created_at', 'desc')->get();
         $dataSchedule = [
             'one' => 10,
-            'two' => 5,
+            'two' => 1,
             'three' => 1,
-            'four' => 2,
-            'custom' => 3,
+            'four' => 1,
+            'custom' => 6,
             'default' => Carbon::now()->addMinutes(10),
             'collection_id' => $collections[0]->id
         ];
@@ -41,60 +75,23 @@ class CollectionController extends Controller
         return response()->json($collection);
     }
 
-    public function createCard($id)
+    public function update(Request $request)
     {
-        $collection = Collection::findOrFail($id);
-        $cards = Card::where('collection_id', $id)->orderBy('updated_at','Desc')->paginate(6);
+        $collection = Collection::find($request->id)->update([
+            'name'=> $request->name,
+            'description' => $request->description,
+            'status' => $request->status
+        ]);
 
-        return view('collection.create-card', compact('collection', 'cards'));
+        return response()->json($request->id);
     }
 
-    public function update($id, Request $request)
+    public function showCardByCollection($id)
     {
-        $collection = Collection::find($id)->update(['name'=> $request->name]);
-
-        return response()->json($id);
-    }
-
-    public function storeCard(Request $request)
-    {
-        $data = [
-            'front' => $request->front,
-            'back' => $request->back,
-            'collection_id' => $request->collection_id,
-        ];
-
-        $card = Card::create($data);
+        $cards = Card::where('collection_id', $id)->orderBy('updated_at', 'desc')->get();
+        $tags = Tab::get();
         
-        return response()->json();
-    }
-
-    public function showCard(Request $request)
-    {
-        $card = Card::findOrFail($request->id);
-
-        return view('collection.show-card', compact('card'));
-    }
-
-    public function updateCard(Request $request)
-    {
-        $card = Card::find($request->id)
-            ->update(
-                [
-                    'front'=> $request->front,
-                    'back' => $request->back
-                ]
-            );
-        $card = Card::findOrFail($request->id);
-
-        return view('collection.show-card', compact('card'));
-    }
-
-    public function deleteCard(Request $request)
-    {
-        Card::destroy($request->id);
-
-        return view('collection.delete-card');
+        return view('card.edit-card', compact('cards', 'id', 'tags'));
     }
 
     public function delete(Request $request)
@@ -104,10 +101,11 @@ class CollectionController extends Controller
         return response()->json();
     }
 
-    public function showCollection(){
-        $collection = Collection::select('name', 'id', 'level')->where('user_id', auth()->id())->orderBy('created_at', 'desc')->get();
-        $now = Carbon::now();
+    public function viewCollection($id)
+    {
+        $tags = Tab::get();
+        $cards = Card::where('collection_id', $id)->get();
 
-        return view('collection.index-card', compact('collection', 'now'));
-    }
+        return view('collection.view-other-collection', compact('cards', 'tags', 'id'));
+    } 
 }
