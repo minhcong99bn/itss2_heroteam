@@ -9,6 +9,9 @@
                     <a style="color:white; text-decoration: none; font-weight: 500; font-size: 24px;" href="{{ route('dashboard') }}">Collection</a>
                 </li>
                 <li>
+                    <a style="color:white; text-decoration: none; font-weight: 500; font-size: 24px;" href="{{ route('card.index') }}">Review</a>
+                </li>
+                <li>
                     <a style="color:white; text-decoration: none; font-weight: 500; font-size: 24px; " href="{{ route('collection.getshare') }}">Get Share</a>
                 </li>
             </ul>
