@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@include('message.message')
 <section class="d-flex justify-content-around mt-5 px-5">
     <div class="collection-list mr-5 ml-5 col-4">
         <div class="d-flex flex-row justify-content-between">
@@ -53,27 +54,35 @@
         </div>
       </div>
       {{-- Update Collection --}}
-      <div class="modal fade" id="updatedCollection" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal fade" id="test"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog"  role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" style="font-size: 30px; color:black; font-weight:800;" id="exampleModalLongTitle">Edit Collection</h5>
+              <h5 class="modal-title" id="exampleModalLabel" style="font-family: Roboto;
+              font-style: normal;
+              font-weight: 500;
+              font-size: 26px;
+              line-height: 32px;
+              text-align: center;
+              color: #14142B;
+              font-weight: 600;
+              ">Change collection to private or  public</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-            <div class="modal-body row my-3  align-items-center">
-                <meta name="csrf-token" content="{!! csrf_token() !!}">
-                <label for="email" class="mt-2"><b style="color: black; font-size:20px;">Collection of Name</b></label>
-                <input type="text" class="form-control updated-name" placeholder="Enter Name" name="name" required>
-                <label for="psw" class="mt-3"><b style="color: black; font-size:20px;">Description</b></label>
-                <input type="text"  placeholder="description" class="mr-2 col-10 updated-description form-control" required>
-                <label for="psw" class="mt-3"><b style="color: black; font-size:20px;">Status</b></label>
-                <select name="status" class="form-control updated-status">
-                    <option value="1">Public</option>
-                    <option value="0">Private</option>
-                </select>
+            <div class="modal-body">
+              <p style="font-family: Roboto;
+              font-style: normal;
+              font-weight: normal;
+              font-size: 20px;
+              line-height: 28px;              
+              text-align: center;              
+              color: #848E9C;">If you choose to make your collection status. All your data in public state (or private)(e.g. download rate) will be delete and cannot recover</p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" path="{{ route('collection.update')}}" class="btn btn-primary updated-collection">Updated</button>
+              <button path="{{ route('update-status') }}" type="button" class="btn btn-primary updateStatus" style="background-color: #AC373A;">I agree</button>
             </div>
           </div>
         </div>
@@ -90,14 +99,12 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
         $.ajax({
             url: path,
             type: "get",
             data: {
                 'id' : id,
             },
-
             success: function(response) {
                 $('.collection-detail').children().remove();
                 $('.collection-detail').append($(response).html());
@@ -106,12 +113,37 @@
     });
     
 </script>
+<script>
+  $(document).on('click', '.updateStatus', function() {
+     
+      var path = $(this).attr("path");
+      var id = $('.delete-collection').attr("data-id"); 
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      $.ajax({
+          url: path,
+          type: "post",
+          data: {
+              'id' : id,
+          },
+
+          success: function(response) {
+              $('#test .close').click();
+              $('.collection-detail').children().remove();
+              $('.collection-detail').append($(response).html());
+          }
+      });
+  });
+  
+</script>
 {{-- XÓa bộ thẻ --}}
 <script>
      $(document).on('click', '.delete-collection', function() {
             var id = $(this).attr("data-id");
             var path = $(this).attr("path");
-            if (confirm("Are you sure ?")) { 
               $.ajaxSetup({
                   headers: {
                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -126,12 +158,20 @@
                   },
 
                   success: function(response) {
-                      var remove = ".collection-" + id;
+                    Swal.fire({
+                    title: "Success",
+                    text: "Delete collection success!",
+                    icon: "success",
+                    buttons: true,
+                    dangerMode: true,
+                  })
+                  .then((willDelete) => {
+                    var remove = ".collection-" + id;
                       $('.collection-detail').children().remove();
                       $(remove).remove();
+                  });
                   }
               });
-            }
         });
 </script>
 {{-- Cập nhật lịch --}}
@@ -143,6 +183,7 @@
     });
     
     $(document).on('click', '.schedule-save', function() {
+        
         var id = $(this).attr('data-id');
         var path = $(this).attr('data-path');
         $.ajaxSetup({
@@ -164,10 +205,18 @@
               },
 
               success: function(response) {
-                $('.schedule-save').toggle();
-                $('.updated').toggle();
+                  Swal.fire({
+                    title: "Success",
+                    text: "Update schedule success!",
+                    icon: "success",
+                    buttons: true,
+                    dangerMode: true,
+                  })
+                  .then((willDelete) => {
+                    $('.schedule-save').toggle();
+                  $('.updated').toggle();
                   $(".schedule-input").attr('disabled','disabled');
-                  alert("Edit schedule success!");
+              });
               }
           });
       });

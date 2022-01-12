@@ -2,7 +2,9 @@
     <div class="buttoon">
       <button class="button button1 btn-front">Front</button>
       <button class="button button2 btn-back">Back</button>
-      <button class="button button3 btn-back">Clone</button>
+    @if ($check==0)
+        <a type="button" href="{{ route('clone.collection', $card->collection_id) }}" class="button button3">Clone</a>
+    @endif
     </div>
     <div class="tags">
         <select class="fav_clr form-control mt-5 select-tag" name="tag[]" multiple="multiple">
@@ -38,7 +40,7 @@
             <textarea style="display: none" class="form-control text-front"  name="back" rows="25">{{ $card->front }}</textarea>  
         </div>
         <div class="card-content card-back" style="height: 500px; display: none;">
-            <span class="mt-4 text-card">{{ $card->back }}</span>
+            <span class="mt-4 text-card" style="font-size: 30px;">{!! $card->back !!}</span>
             <textarea style="display: none" class="form-control text-back"  name="back" rows="25">{{ $card->back }}</textarea>  
         </div>
     </div>

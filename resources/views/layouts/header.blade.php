@@ -4,7 +4,7 @@
             <img src="{{ asset('storage/images/logo.png') }}" alt="logo" />
         </div>
         <div class="mt--1" style="margin-top: -3%;">
-            <ul class="nav-menu" style="margin-top: 10%;">
+            <ul class="nav-menu" style="margin-bottom: -40px;">
                 <li>
                     <a style="color:white; text-decoration: none; font-weight: 500; font-size: 24px;" href="{{ route('dashboard') }}">Collection</a>
                 </li>

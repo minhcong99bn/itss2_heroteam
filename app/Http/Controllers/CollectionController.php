@@ -35,9 +35,11 @@ class CollectionController extends Controller
         $totalCard = Card::where('collection_id', $request->id)->count();
         $newCard = Card::where('collection_id', $request->id)->where('level', -1)->count();
         $dueCard = Card::where('collection_id', $request->id)->where('default','<=', Carbon::now())->count();
+        $totalClone = Collection::where('collection_id', $request->id)->count();
         $schedule = Schedule::where('collection_id', $request->id)->first();
+        $check = Collection::where('collection_id', $request->id)->where('user_id', auth()->id())->count();
 
-        return view('collection.view-collection', compact('collection', 'totalCard', 'newCard', 'dueCard', 'schedule'));
+        return view('collection.view-collection', compact('collection', 'totalCard', 'newCard', 'dueCard', 'schedule','totalClone', 'check'));
     }
 
     public function getShare(Request $request)
@@ -89,9 +91,11 @@ class CollectionController extends Controller
     public function showCardByCollection($id)
     {
         $cards = Card::where('collection_id', $id)->orderBy('updated_at', 'desc')->get();
+        $card = Card::where('collection_id', $id)->orderBy('updated_at', 'desc')->first();
         $tags = Tab::get();
+        $collection = Collection::findOrFail($id);
         
-        return view('card.edit-card', compact('cards', 'id', 'tags'));
+        return view('card.edit-card', compact('cards', 'id', 'tags', 'card', 'collection'));
     }
 
     public function delete(Request $request)
@@ -105,7 +109,71 @@ class CollectionController extends Controller
     {
         $tags = Tab::get();
         $cards = Card::where('collection_id', $id)->get();
+        $check = Collection::where('collection_id', $id)->where('user_id', auth()->id())->count();
+        $collection = Collection::findOrFail($id);
 
-        return view('collection.view-other-collection', compact('cards', 'tags', 'id'));
-    } 
+        return view('collection.view-other-collection', compact('cards', 'tags', 'id', 'check', 'collection'));
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $collection = Collection::where('id', $request->id)->first();
+        if ($collection->status == 1) $data =0;
+        else $data = 1;
+        $collection = Collection::find($request->id)->update([
+            'status' => $data
+        ]);
+        $collection = Collection::where('id', $request->id)->first();
+        $totalCard = Card::where('collection_id', $request->id)->count();
+        $newCard = Card::where('collection_id', $request->id)->where('level', -1)->count();
+        $dueCard = Card::where('collection_id', $request->id)->where('default','<=', Carbon::now())->count();
+        $schedule = Schedule::where('collection_id', $request->id)->first();
+
+        return view('collection.collection-detail', compact('collection', 'totalCard', 'newCard', 'dueCard', 'schedule'));
+    }
+
+    public function clone($id)
+    {
+        $collection = Collection::where('id', $id)->first();
+        //Store Collection
+        $data = [
+            'name' => $collection->name,
+            'description' => $collection->description,
+            'status' => 1,
+            'user_id' => auth()->id(),
+            'owner_id' => $collection->user_id,
+            'collection_id' => $collection->id,
+            'level' => -1
+        ];
+
+        $collectionNew = Collection::create($data);
+        $collections = Collection::orderBy('created_at', 'desc')->get();
+        $dataSchedule = [
+            'one' => 10,
+            'two' => 1,
+            'three' => 1,
+            'four' => 1,
+            'custom' => 6,
+            'default' => Carbon::now()->addMinutes(10),
+            'collection_id' => $collections[0]->id
+        ];
+        $schedule = Schedule::create($dataSchedule);
+        $cards = Card::where('collection_id', $collection->id)->get();
+        foreach($cards as $card)
+        {
+            $data = [
+                'front' => $card->front,
+                'back' => $card->back,
+                'collection_id' => $collectionNew->id,
+                'level' => -1,
+                'default' => Carbon::now()
+            ];
+    
+            $cardNew = Card::create($data);
+
+            $cardNew->tabs()->attach($card->tabs);
+        }
+        
+        return redirect()->route('collection.card', $collection->id)->with('success', 'Clone Success!');;
+    }
 }

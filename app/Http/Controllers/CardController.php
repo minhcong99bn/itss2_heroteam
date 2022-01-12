@@ -17,17 +17,40 @@ class CardController extends Controller
         ->whereHas('collection', function ($collection) {
             $collection->where('user_id', auth()->id());
             })
+        ->with('collection', function ($collection){
+            $collection->with('schedules')->get();
+        })
         ->paginate(1);
 
         return view('card.index', compact('cards'));
     }
 
-    public function store(Request $request)
+    public function learnNow($id)
+    {
+        $cards = Card::where('default', '<=', Carbon::now())->where('collection_id', $id)
+        ->with('collection', function ($collection){
+            $collection->with('schedules')->get();
+        })
+        ->paginate(1);
+
+        return view('card.index', compact('cards'));
+    }
+
+
+    public function createCard($id)
+    {
+        $tags = Tab::get();
+        $collection = Collection::where('id', $id)->first();
+        
+        return view('card.add-cardd', compact('tags', 'collection'));
+    }
+
+    public function store($id, Request $request)
     {
         $data = [
             'front' => $request->front,
             'back' => $request->back,
-            'collection_id' => $request->id,
+            'collection_id' => $id,
             'level' => -1,
             'default' => Carbon::now()
         ];
@@ -35,7 +58,7 @@ class CardController extends Controller
         $card = Card::create($data);
         $card->tabs()->attach($request->tag);
 
-        return redirect()->route('collection.card', $request->id);
+        return redirect()->route('collection.card', $id)->with(['success' => 'Create card success!']);
     }
 
     public function storeTag(Request $request)
@@ -43,9 +66,10 @@ class CardController extends Controller
         $data = [
             'name' => $request->name
         ];
+        
         $tag = Tab::create($data);
 
-        return redirect()->route('collection.card', $request->id);
+        return redirect()->route('collection.card', $request->id)->width(['success'=> 'Create Tag success!']);
     }
 
     public function show($id)
@@ -62,8 +86,9 @@ class CardController extends Controller
         
         $card = Card::findOrFail($id);
         $tags = Tab::get();
+        $check = Collection::where('collection_id', $card->collection_id)->where('user_id', auth()->id())->count();
 
-        return view('collection.view-other-card', compact('card', 'tags'));
+        return view('collection.view-other-card', compact('card', 'tags', 'check'));
     }
 
     public function update($id, Request $request)
@@ -86,11 +111,10 @@ class CardController extends Controller
         return response()->json();
     }
 
-    public function updateCardSchedule(Request $request)
+    public function cardSchedule(Request $request)
     {
-        $card = Card::findOrFail($request->id);
-        $collection = Collection::where('id', $card->collection_id)->first();
-        $schedule = Schedule::where('collection_id', $collection->id)->first();
+        $card = Card::where('id',$request->id)->first();
+        $schedule = Schedule::where('collection_id', $card->collection_id)->first();
         $dataSchedule = ['default' => Carbon::now()->addMonths($schedule->custom) ];
         if ($card->level != 0)
         {
@@ -100,8 +124,7 @@ class CardController extends Controller
                     $card->level = 0;
                 }
                 else {
-                    
-                    if ($card->level == -1)  
+                    if ($card->level == -1)
                         $data = ['level' => '1'] ;
                     elseif ($card->level == 1)
                         $data = ['level' => '2'] ;
@@ -109,33 +132,45 @@ class CardController extends Controller
                         $data = ['level' => '3'] ;
                     else 
                         $data = ['level' => '4'];
-                    $card->update(['level' => 2]);
+                    $card->update($data);
                     if ($card->level == 2) {
                         $dataSchedule['default'] = Carbon::now()->addDays($schedule->two);
-                    } else if ($collection->level == 3) 
+                    } elseif ($card->level == 3) 
                         $dataSchedule['default'] = Carbon::now()->addWeeks($schedule->three);
-                    else
+                    elseif($card->level == 4)
                         $dataSchedule['default'] = Carbon::now()->addMonths($schedule->four);
+
+                    else $dataSchedule['default'] = Carbon::now()->addMinutes($schedule->one);
                 }
             } 
             elseif ($request->hard == 1) {
+                if ( $card->level == -1) 
+                {
+                    $data = ['level' => 1];
+                    $card->update($data);
+                }
                 if ($card->level == 2) {
                     $dataSchedule['default'] = Carbon::now()->addDays($schedule->two);
-                } else if ($card->level == 3) 
+                } elseif ($card->level == 3) 
                     $dataSchedule['default'] = Carbon::now()->addWeeks($schedule->three);
                 elseif($card->level == 4)
                     $dataSchedule['default'] = Carbon::now()->addMonths($schedule->four);
-                else $dataSchedule['default'] = Carbon::now()->addMinutes($schedule->one);
+                elseif ($card->level == 1) 
+                    $dataSchedule['default'] = Carbon::now()->addMinutes($schedule->one);
             } 
             elseif ($request->veryhard == 1) {
+                if ( $card->level == -1) 
+                {
+                    $data = ['level' => 1];
+                    $card->update($data);
+                }
                 if ($card->level == 1) {
                     $card->level = 1;
                 }
                 else {
                     $data = ['level' => $card->level - 1];
-                    if ( $card->level == -1)  $data = ['level' => 1];
                     $card->update($data);
-                    if ($collection->level == 2) {
+                    if ($card->level == 2) {
                         $dataSchedule['default'] = Carbon::now()->addDays($schedule->two);
                     } else if ($card->level == 3) 
                         $dataSchedule['default'] = Carbon::now()->addWeeks($schedule->three);
@@ -143,12 +178,6 @@ class CardController extends Controller
                         $dataSchedule['default'] = Carbon::now()->addMinutes($schedule->one);
                 }
             }
-            if ( $card->level == -1) 
-            {
-                $data = ['level' => 1];
-                $card->update($data);
-            }
-            
         }
         $card->update($dataSchedule);
 

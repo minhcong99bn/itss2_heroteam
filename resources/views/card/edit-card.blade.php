@@ -1,8 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+@include('message.message')
+@include('message.alert')
     <section class="d-flex mx-5">
         <div class="col-5">
+          <div class="text-center"><h1 style="margin-top: 10px; font-weight: 600;">{{ $collection->name }}</h1></div>
             <div class="searchby" action="{{ route('collection.card', $id) }}">
                 <div class="d-flex flex-row">
                     <p class="mr-3" style="font-size: 23px; font-weight: 500; margin-right: 4%;">Search By</p>
@@ -17,9 +20,9 @@
                     <input type="text"  class="form-control" style="padding: 23px; font-size: 22px;" placeholder="Search">
                 </div>
                 <div class="d-flex justify-content-end" style>
-                    <button data-toggle="modal" data-target="#exampleModalCenter" type="button" class = "btn btn-lg btn-primary add-card">
+                    <a href="{{ route('card.create', $id) }}" type="button" class = "btn btn-lg btn-primary add-card">
                     <i class="fas fa-plus pl-5" style="font-size: 12px;"></i>
-                    </button>
+                    </a>
                     <button data-toggle="modal" data-target="#createTag" type="button" class = "btn btn-success add-tag p-2" style="margin-left: 20px;">Create Tag</button>
                 </div>
             </div>
@@ -32,8 +35,8 @@
                     </tr>
                     @foreach ($cards as $card)
                         <tr>
-                            <td class="view-card" action="{{ route('card-show', $card->id) }}"><a   style="color:black; text-decoration: none; font-weight: 600;">{{ $card->front }}</a></td>
-                            <td>{{ $card->level = -1 ? '#New' : $card->default }}</td>
+                            <td class="view-card-{{ $card->id }} view-card" style="color:black;" data-id="{{ $card->id }}" action="{{ route('card-show', $card->id) }}"><a   style="text-decoration: none; font-weight: 600;">{{ $card->front }}</a></td>
+                            <td>{{ $card->level == -1 ? '#New' : $card->default }}</td>
                             <td>
                                 <ul class="tags">
                                     @foreach ($card->tabs as $tag)
@@ -86,36 +89,6 @@
         </div>
         </div>
       </div>
-      {{-- Create card --}}
-      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <form action="{{ route('create-card', ["id"=> $id ]) }}" method="post">
-            @csrf
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" style="font-size: 30px; color:black; font-weight:500;" id="exampleModalLongTitle">Create New Card</h5>
-                  </div>
-                  <div class="modal-body row my-3  align-items-center">
-                      <meta name="csrf-token" content="{!! csrf_token() !!}">
-                      <label for="email" class="mt-2"><b style="font-size:20px; font-weight:500;">Card Front</b></label>
-                      <input type="text" class="form-control" placeholder="Enter Name" name="front" required>
-                      <label for="psw" class="mt-3"><b style="font-size:20px; font-weight:500;">Card Back</b></label>
-                      <textarea class="form-control" id="exampleFormControlTextarea1" name="back" rows="3"></textarea>  
-                      <label for="psw" class="mt-3 mb--5" style=" margin-bottom: -24px;"><b style="font-weight:500; font-size:20px;">Tag</b></label>
-                      <select class="fav_clr form-control" name="tag[]" multiple="multiple">
-                            @foreach($tags as $tab)
-                                <option value="{{ $tab->id }}">{{ $tab->name }}</option>
-                            @endforeach
-                      </select>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                  </div>
-                </div>
-              </div>
-        </form>
-      </div>
       {{-- Create tag --}}
       <div class="modal fade" id="createTag" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <form action="{{ route('create-tag', ['id' => $id]) }}" method="post">
@@ -138,7 +111,7 @@
               </div>
         </form>
       </div>
-    </section>
+  </section>
 @endsection
 <style>
   .navbar {
@@ -315,13 +288,20 @@
   }
   .result .flas-card .card-content{
     height: 100%;
-    font-size: 80px;
     text-align: center;
     display: flex;
     justify-content: center;
     align-content: center;
     flex-direction: column;
   }
+ .card-front {
+    font-size: 80px;
+  }
+
+  .card-back {
+    font-size: 35px;
+  }
+
   simple-tags {
     border: 1px solid #1e87f0;
     box-sizing: border-box;
@@ -422,12 +402,24 @@
     width: 50% !important;
 }
 
-.tags .select2-selection--multiple
-{
-    height: 40px !important;
+.ck-editor__editable{
+    height: 460px !important;
+}
+
+.ck-toolbar_grouping {
+  margin-top: 30px;
+}
+.swal2-popup .swal2-modal .swal2-icon-success .swal2-show {
+  height: 320px !important;
+  width: 410px !important;
+  font-size: 17px !important;
 }
 </style>
-<script src="http://code.jquery.com/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery.min.js"></script> 
+
+@push('js')
+
+
 <script>
         $(document).ready(function() {
     $('.fav_clr').select2({
@@ -454,6 +446,13 @@ $('.fav_clr').on("select2:select", function (e) {
             $('.card-front').hide();
             $('.card-back').show();
         });
+</script>
+<script>
+   $(document).on('click', '.view-card', function() {
+    $(".view-card").css('color', 'black');
+    path = ".view-card-" + $(this).attr("data-id");
+    $(path).css('color', 'red');
+   });
 </script>
 {{-- Select 2 --}}
 <script>
@@ -482,7 +481,6 @@ $('.fav_clr').on("select2:select", function (e) {
 </script>
 <script>
      $(document).on('click', '.view-card', function() {
-
         var path = $(this).attr("action");
         $.ajax({
             url: path,
@@ -501,8 +499,16 @@ $('.fav_clr').on("select2:select", function (e) {
        $('.text-card').toggle();
        $('.text-front').toggle();
        $('.text-back').toggle();
+       ClassicEditor
+            .create( document.querySelector( '#editor' ) )
+            .then( editor => {
+                    console.log( editor );
+            } )
+            .catch( error => {
+                    console.error( error );
+            });
    });
-   $(document).on('click', '.save-card', function() {     
+   $(document).on('click', '.save-card', function() {
        $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -513,16 +519,24 @@ $('.fav_clr').on("select2:select", function (e) {
            type: "post",
            data : {
                'front' : $('.text-front').val(),
-               'back' : $('.text-back').val(),
+               'back' : $('.card-back p').text(),
                'tag' : $('.select-tag').val()
            },
             success: function(response) {
-                window.location.href = $('.searchby').attr("action");
+              Swal.fire({
+                    title: "Success",
+                    text: "Update card success!",
+                    icon: "success",
+                    buttons: true,
+                    dangerMode: true,
+                  })
+                  .then((willDelete) => {
+                    window.location.href = $('.searchby').attr("action");
+              });
            }
        });  
    });
    $(document).on('click', '.delete-card', function() { 
-       console.log($('.searchby').attr("action"));    
        $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -535,9 +549,18 @@ $('.fav_clr').on("select2:select", function (e) {
             'tag' : $('.select-tag').val()
            },
             success: function(response) {
-                alert("delete success!")
-                window.location.href = $('.searchby').attr("action");
+              Swal.fire({
+                    title: "Success",
+                    text: "Delete card success!",
+                    icon: "success",
+                    buttons: true,
+                    dangerMode: true,
+                  })
+                  .then((willDelete) => {
+                    window.location.href = $('.searchby').attr("action");
+              });
            }
        });  
    });
 </script>
+@endpush
