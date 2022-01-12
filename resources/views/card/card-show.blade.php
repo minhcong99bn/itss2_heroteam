@@ -37,8 +37,8 @@
             <textarea style="display: none" class="form-control text-front" id="exampleFormControlTextarea1" name="back" rows="25">{{ $card->front }}</textarea>  
         </div>
         <div class="card-content card-back" style="height: 500px; display: none;">
-            <span class="mt-4 text-card">{{ $card->back }}</span>
-            <textarea style="display: none" class="form-control text-back" id="exampleFormControlTextarea1" name="back" rows="25">{{ $card->back }}</textarea>  
+            <span class="mt-4 text-card">{!! $card->back !!}</span>
+            <textarea style="display: none" id="editor" class="form-control text-back" name="back" rows="25">{!! $card->back !!}</textarea>  
         </div>
     </div>
     </div>

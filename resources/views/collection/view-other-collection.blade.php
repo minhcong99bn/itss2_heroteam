@@ -4,6 +4,7 @@
     <section class="d-flex mx-5">
         <div class="col-5">
             <div class="searchby" action="{{ route('collection.card', $id) }}">
+              <div class="text-center"><h1 style="margin-top: 10px; font-weight: 600;">{{ $collection->name }}</h1></div>
                 <div class="d-flex flex-row">
                     <p class="mr-3" style="font-size: 23px; font-weight: 500; margin-right: 4%;">Search By</p>
                     <div >
@@ -26,8 +27,8 @@
                     </tr>
                     @foreach ($cards as $card)
                         <tr>
-                            <td class="view-card" action="{{ route('other-card-show', $card->id) }}"><a   style="color:black; text-decoration: none; font-weight: 600;">{{ $card->front }}</a></td>
-                            <td>{{ $card->level = -1 ? '#New' : $card->default }}</td>
+                            <td class="view-card view-card-{{ $card->id }}" style="color:black;" data-id="{{ $card->id }}" action="{{ route('other-card-show', $card->id) }}"><a   style=" text-decoration: none; font-weight: 600;">{{ $card->front }}</a></td>
+                            <td>{{ $card->level == -1 ? '#New' : $card->default }}</td>
                             <td>
                                 <ul class="tags">
                                     @foreach ($card->tabs as $tag)
@@ -45,7 +46,9 @@
         <div class="buttoon">
           <button class="button button1 btn-front">Front</button>
           <button class="button button2 btn-back">Back</button>
-          <button class="button button3 btn-back">Clone</button>
+          @if($check==0)
+            <a type="button" href="{{ route('clone.collection',$id) }}" class="button button3">Clone</a>
+          @endif
         </div>
         <div class="tags">
             <select class="fav_clr form-control mt-5" name="tag[]" multiple="multiple">
@@ -82,57 +85,9 @@
         </div>
       </div>
       {{-- Create card --}}
-      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <form action="{{ route('create-card', ["id"=> $id ]) }}" method="post">
-            @csrf
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" style="font-size: 30px; color:black; font-weight:500;" id="exampleModalLongTitle">Create New Card</h5>
-                  </div>
-                  <div class="modal-body row my-3  align-items-center">
-                      <meta name="csrf-token" content="{!! csrf_token() !!}">
-                      <label for="email" class="mt-2"><b style="font-size:20px; font-weight:500;">Card Front</b></label>
-                      <input type="text" class="form-control" placeholder="Enter Name" name="front" required>
-                      <label for="psw" class="mt-3"><b style="font-size:20px; font-weight:500;">Card Back</b></label>
-                      <textarea class="form-control" id="exampleFormControlTextarea1" name="back" rows="3"></textarea>  
-                      <label for="psw" class="mt-3 mb--5" style=" margin-bottom: -24px;"><b style="font-weight:500; font-size:20px;">Tag</b></label>
-                      <select class="fav_clr form-control" name="tag[]" multiple="multiple">
-                            @foreach($tags as $tab)
-                                <option value="{{ $tab->id }}">{{ $tab->name }}</option>
-                            @endforeach
-                      </select>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                  </div>
-                </div>
-              </div>
-        </form>
-      </div>
+    
       {{-- Create tag --}}
-      <div class="modal fade" id="createTag" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <form action="{{ route('create-tag', ['id' => $id]) }}" method="post">
-            @csrf
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" style="font-size: 30px; color:black; font-weight:500;" id="exampleModalLongTitle">Create Tag</h5>
-                  </div>
-                  <div class="modal-body row my-3  align-items-center">
-                      <meta name="csrf-token" content="{!! csrf_token() !!}">
-                      <label for="email" class="mt-2"><b style="font-size:20px; font-weight:500;">Name</b></label>
-                      <input type="text" class="form-control" placeholder="Enter Name" name="name" required>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                  </div>
-                </div>
-              </div>
-        </form>
-      </div>
+      
     </section>
 @endsection
 <style>
@@ -423,6 +378,17 @@
 }
 </style>
 <script src="http://code.jquery.com/jquery.min.js"></script>
+@push('js')
+<script>
+  $(document).on('click', '.view-card', function() {
+   $(".view-card").css('color', 'black');
+   path = ".view-card-" + $(this).attr("data-id");
+   console.log(path);
+   $(path).css('color', 'red');
+  });
+</script>
+@endpush
+
 <script>
         $(document).ready(function() {
     $('.fav_clr').select2({

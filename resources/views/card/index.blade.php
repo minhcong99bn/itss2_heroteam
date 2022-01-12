@@ -2,53 +2,88 @@
 
 @section('content')
     <section class="container">
-        <div class="col-1 d-flex flex-row align-items-center">
-            <button class="btn prev-card" value="1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left-square-fill" viewBox="0 0 16 16">
-                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm10.5 10V4a.5.5 0 0 0-.832-.374l-4.5 4a.5.5 0 0 0 0 .748l4.5 4A.5.5 0 0 0 10.5 12z"/>
-                </svg>
-            </button>
-        </div>
+        {{ $cards->links('pagination::left-button') }}
         <div class="flashcard" path="{{ route('card.index') }}">
             <div class="flashcard-inner">
                 <div class="card-front">
                     <div class="card-body">
                         <p>{{ count($cards)>0 ? $cards[0]->front : 'Front'}}</p>
                     </div>
-                    <div class="card-show card-show-hide" data-id="{{ count($cards)>0 ? $cards[0]->id: '' }}" action="{{ route('card-update-schedule') }}">
+                    <div class="card-show card-show-hide" data-id="{{ count($cards)>0 ? $cards[0]->id: '' }}" action="{{ route('card.update.schedule') }}">
                         <button type="button" class="show-hide" onclick="flip()">Show answer</button>
                     </div>
                 </div>
                 <div class="card-back">
                     <div class="card-body">
                         <div class="answer-display">
-                            <p><span style="font-weight: bold;">{{ count($cards)>0 ? $cards[0]->back : 'Back' }}</p>
+                            <p><span style="font-weight: bold;">{!! count($cards)>0 ? $cards[0]->back : 'Back' !!}</p>
                         </div>
                     </div>
                     <div class="card-show-hide">
-                        <div class="d-flex justify-content-around">
-                            <div>
-                                <button class="btn-easy" style=" background-color: #65C466;">Easy</button>
+                        @if(count($cards) > 0)
+                            <div class="d-flex justify-content-around">
+                                <div>
+                                    @if($cards[0]->level == -1 )
+                                        <button class="btn-easy" style=" background-color: #65C466;">Easy 
+                                            <br>{{ $cards[0]->collection->schedules->one }} minutes</button>
+                                    @elseif($cards[0]->level == 1)
+                                        <button class="btn-easy" style=" background-color: #65C466;">Easy 
+                                            <br>{{ $cards[0]->collection->schedules->two }} days</button>
+                                    @elseif($cards[0]->level == 2)
+                                        <button class="btn-easy" style=" background-color: #65C466;">Easy 
+                                            <br>{{ $cards[0]->collection->schedules->three}} weeks</button>
+                                    @elseif($cards[0]->level == 3)
+                                        <button class="btn-easy" style=" background-color: #65C466;">Easy 
+                                            <br>{{ $cards[0]->collection->schedules->four }} months</button>
+                                    @elseif($cards[0]->level == 4 || $cards[0]->level == 0)
+                                    <button class="btn-easy" style=" background-color: #65C466;">Easy 
+                                        <br>{{ $cards[0]->collection->schedules->custom }} months</button>
+                                    @endif
+                                </div>
+                                <div>
+                                    @if ($cards[0]->level == -1 || $cards[0]->level == 1 )
+                                        <button  class="btn-hard" style="background-color: #D8A522;">Hard
+                                            <br>{{ $cards[0]->collection->schedules->one }} minutes</button>
+                                    @elseif ($cards[0]->level == 2 )
+                                        <button  class="btn-hard" style="background-color: #D8A522;">Hard
+                                        <br>{{ $cards[0]->collection->schedules->two }}days</button>
+                                    @elseif ($cards[0]->level == 3 )
+                                        <button  class="btn-hard" style="background-color: #D8A522;">Hard
+                                            <br>{{ $cards[0]->collection->schedules->three }} weeks</button>
+                                    @elseif ($cards[0]->level == 4 )
+                                        <button  class="btn-hard" style="background-color: #D8A522;">Hard
+                                            <br>{{ $cards[0]->collection->schedules->four }} months</button>
+                                    @elseif ($cards[0]->level == 0 )
+                                        <button  class="btn-hard" style="background-color: #D8A522;">Hard
+                                            <br>{{ $cards[0]->collection->schedules->cutsom }} months</button>
+                                    @endif
+                                </div>
+                                <div>
+                                    @if ($cards[0]->level == -1 || $cards[0]->level == 1 )
+                                        <button  class="btn-veryhard" style="background-color: #AC373A">Very Hard
+                                            <br>{{ $cards[0]->collection->schedules->one }} minutes</button>
+                                    @elseif ($cards[0]->level == 2)
+                                        <button  class="btn-veryhard" style="background-color: #AC373A">Very Hard
+                                            <br>{{ $cards[0]->collection->schedules->one }} minutes</button>
+                                    @elseif ($cards[0]->level == 3)
+                                        <button  class="btn-veryhard" style="background-color: #AC373A">Very Hard
+                                            <br>{{ $cards[0]->collection->schedules->two}} days</button>
+                                    @elseif ($cards[0]->level == 4)
+                                        <button  class="btn-veryhard" style="background-color: #AC373A">Very Hard
+                                            <br>{{ $cards[0]->collection->schedules->three }} weeks</button>
+                                    @elseif ( $cards[0]->level == 0)
+                                        <button  class="btn-veryhard" style="background-color: #AC373A">Very Hard
+                                            <br>{{ $cards[0]->collection->schedules->custom }} months</button>
+                                    @endif
+                                </div>
                             </div>
-                            <div>
-                                <button  class="btn-hard" style="background-color: #D8A522;">Hard</button>
-                            </div>
-                            <div>
-                                <button  class="btn-veryhard" style="background-color: #AC373A">Very Hard</button>
-                            </div>
-                        </div>
+                        @endif
                         
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-1 d-flex flex-row align-items-center">
-            <button class="btn next-page">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-square-fill" viewBox="0 0 16 16">
-                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm5.5 10a.5.5 0 0 0 .832.374l4.5-4a.5.5 0 0 0 0-.748l-4.5-4A.5.5 0 0 0 5.5 4v8z"/>
-                </svg>
-            </button>
-        </div>
+        {{$cards->links('pagination::right-button')}}
     </section>
     @endsection
 <script src="http://code.jquery.com/jquery.min.js"></script>
@@ -115,7 +150,6 @@
     $(document).on('click', '.btn-veryhard', function() {
         var id = $('.card-show').attr("data-id");
         var path = $('.card-show').attr("action");
-        console.log(path);
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -124,7 +158,7 @@
 
         $.ajax({
             url: path,
-            type: "get",
+            type: "put",
             data: {
                 'veryhard' : 1,
                 'id' : id
@@ -148,7 +182,7 @@
 
         $.ajax({
             url: path,
-            type: "get",
+            type: "put",
             data: {
                 'hard' : 1,
                 'id' : id
@@ -163,7 +197,6 @@
     $(document).on('click', '.btn-easy', function() {
         var id = $('.card-show').attr("data-id");
         var path = $('.card-show').attr("action");
-        console.log(id);
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -172,7 +205,7 @@
 
         $.ajax({
             url: path,
-            type: "post",
+            type: "put",
             data: {
                 'easy' : 1,
                 'id' : id
@@ -296,10 +329,10 @@ ul{
     background-color: #E0E0E0;
 }
 .card-show-hide button{
-    margin-top: 18px;
+    margin-top: 10px;
     border: none;
     color: white;
-    padding: 6px 20px;
+    padding: 5px 15px;
     font-size: 15px;
     border-radius: 4px;
     cursor: pointer;

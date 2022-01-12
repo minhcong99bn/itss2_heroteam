@@ -4,7 +4,7 @@
         @foreach($cards as $card )
             <div class="card" onclick="flip()">
                 <div class="front">{{ $card->front }}</div>
-                <div class="back">{{ $card->back }}</div>
+                <div class="back">{!! $card->back !!}</div>
             </div>
         @endforeach
     </div>

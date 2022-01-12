@@ -1,13 +1,11 @@
 <div class="collection-detail">
-  <div class="colname" style="font-size: 34px; font-weight: 700;">Collection Details <img src="{{ $collection->status == 1 ? asset('storage/images/VectorW.png') : asset('storage/images/private.png') }}" alt="logo"/></div>
+  <div class="colname change-status"data-toggle="modal" data-target="#test" style="font-size: 34px; font-weight: 700;">Collection Details <img src="{{ $collection->status == 1 ? asset('storage/images/VectorW.png') : asset('storage/images/private.png') }}" alt="logo"/></div>
     <ul class="setting-menu">
-      <li class="px-5 py-4" style="background-color: #65c466"><a style="color:white; text-decoration:none; font-weight: 600; font-size: 29px;" class="p-3" href="{{ route('collection.card', $collection->id ) }}">Manage Cards</a></li>
+      <div class="d-flex justify-content-start">
+        <li class="px-5 py-4" style="background-color: #65c466"><a style="color:white; text-decoration:none; font-weight: 500; font-size: 25px;" class="p-1" href="{{ route('collection.card', $collection->id ) }}">Manage Cards</a></li>
+        <li class="px-5 py-4" style="background-color: #519CF5"><a style="color:white; text-decoration:none; font-weight: 500; font-size: 25px;" class="p-1" href="{{ route('learn-now', $collection->id ) }}">Learn Now</a></li>
+      </div>
       <div class="d-flex">
-        <li>
-          <button data-toggle="modal" data-target="#updatedCollection" type="button" class = "btn">
-            <i class="fas fa-pencil-alt collection-updated text-success" data-id="{{ $collection->id }}" style="font-size: 28px;"></i>
-            </button>
-        </li>
         <li class="delete">
           <a href="javascript:void(0)" type="button" class="delete-collection align-items-end" path="{{ route('collection-delete') }}" data-id="{{ $collection->id }}">
           <img src="{{ asset('storage/images/Vector.png') }}" alt="logo" />

@@ -11,7 +11,7 @@ class Collection extends Model
 {
     use HasFactory;
     protected $table = 'collections';
-    protected $fillable = ['name', 'user_id', 'active', 'level', 'status', 'description'];
+    protected $fillable = ['name', 'user_id', 'active', 'level', 'status', 'description', 'owner_id', 'collection_id'];
 
     public function cards()
     {
